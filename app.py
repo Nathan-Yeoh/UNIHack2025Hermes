@@ -20,7 +20,39 @@ db.init_app(app)
 @app.route("/")
 #@login_required
 def serve_home():
-    return render_template('layouts/base.html')
+    return render_template('Home.html')
+
+@app.route("/Classroom", methods=["GET", "POST"])
+def serve_classroom():
+    return render_template('Classroom.html')
+
+@app.route("/Classroom/Student", methods=["GET", "POST"])
+def serve_student_graph():
+    return render_template('StudentGraph.html')
+
+@app.route("/Classroom/TestPaper", methods=["GET", "POST"])
+def serve_testpaper():
+    return render_template('TestPaper.html')
+
+@app.route("/Classroom/TestPaper/Create")
+def serve_testpaper_create():
+    return render_template('TestPaperCreate.html')
+
+@app.route("/Classroom/TestPaper/Edit")
+def serve_testpaper_edit():
+    return render_template('TestPaperEdit.html')
+
+@app.route("/Classroom/TestPaper/Mark", methods=["GET", "POST"])
+def serve_testpaper_mark():
+    return render_template('TestPaperMark.html')
+
+@app.route("/About")
+def serve_about():
+    return render_template('About.html')
+
+@app.route("/Credit")
+def serve_credit():
+    return render_template('Credit.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
