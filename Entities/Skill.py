@@ -1,7 +1,7 @@
 from db import db
 
 
-class Skill(db.model):
+class Skill(db.Model):
     __tablename__ = "Skill"
 
     # GENERAL ATTRIBUTES

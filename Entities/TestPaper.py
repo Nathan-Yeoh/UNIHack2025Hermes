@@ -1,6 +1,6 @@
 from db import db
 
-class TestPaper(db.model):
+class TestPaper(db.Model):
     __tablename__ = "TestPaper"
 
     tp_id = db.Column(db.Integer, primary_key=True)

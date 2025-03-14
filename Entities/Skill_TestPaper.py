@@ -1,6 +1,6 @@
 from db import db
 
-class Skill_TestPaper(db.model):
+class Skill_TestPaper(db.Model):
     __tablename__ = "Skill_TestPaper"
 
     tp_id = db.Column(db.Integer, db.ForeignKey("TestPaper.tp_id", ondelete="CASCADE"), primary_key=True)
