@@ -105,18 +105,30 @@ def serve_testpaper(cl_id: str, tp_id: int):
 def serve_testpaper_create():
     if request.method == "POST":
         # class and test id
-        classroom_id = request.form.get("cl_id")
-        testpaper_id = request.form.get("tp_id")
+        cl_id = request.form.get("cl_id")
+        tp_id = request.form.get("tp_id")
 
-    return render_template('TestPaperCreate.html', cl_id=classroom_id, tp_id=testpaper_id)
+    return render_template('TestPaperCreate.html', cl_id=cl_id, tp_id=tp_id)
 
 
 @app.route("/Classroom/TestPaper/Edit/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper_edit(cl_id: str, tp_id: int):
     if request.method == "POST":
         cl_id = request.form.get("cl_id")
-        tp_id = request.form.get("tp_id")
+        tp_id = int(request.form.get("tp_id")) - 2
+        tp_name = request.form.get("tp_name")
 
+        print("-" * 64)
+        print(tp_name)
+        print("-" * 64)
+
+        if tp_name is None or tp_name == "":
+            return redirect(url_for('serve_home'))
+        else:
+            tp_file = request.files['tp_file']
+
+    print(cl_id)
+    print(tp_id)
     classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
     # get the questions of the test as a tuple (question string, marks available)
     questions = DBHandler.getTestQuestionsByTpId(tp_id)
