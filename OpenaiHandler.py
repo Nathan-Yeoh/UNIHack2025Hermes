@@ -56,20 +56,12 @@ class OpenaiHandler:
     llm = OpenAI(api_key=openai_api_key)
 
     qa_chain = LLMChain(llm=llm, prompt=prompt)
-
-    @staticmethod
-    def extract_text_from_pdf(path):
-        with open(path, "rb") as file:
-            pdfFile = PyPDF2.PdfReader(file)
-            output = ""
-            for page in pdfFile.pages:
-                output += page.extract_text()
-        return output
     
     @staticmethod
-    def insert_pdf_into_database(pdf_directory, tp_id, cl_id, cltp_name):
+    def insert_pdf_into_database(filename, tp_id, cl_id, cltp_name):
         skills = " ".join(DBHandler.get_all_skill_names())
-        pdf_text = OpenaiHandler.extract_text_from_pdf(pdf_directory)
+        data = DBHandler.get_file(filename)
+        pdf_text = OpenaiHandler.extract_text_from_pdf(data)
         output = OpenaiHandler.qa_chain.run(test_paper=pdf_text, skill_list=skills)
         print(output)
         formatted = OpenaiHandler.output_to_list(output)
@@ -83,6 +75,15 @@ class OpenaiHandler:
                 DBHandler.add_to_skill_testpaper(tp_id, question[0], sk_id)
             
 
+    @staticmethod
+    def extract_text_from_pdf(data):
+        with open("output.pdf", "wb") as output_file:
+            output_file.write(data)
+        pdfFile = PyPDF2.PdfReader("output.pdf")
+        output = ""
+        for page in pdfFile.pages:
+            output += page.extract_text()
+        return output
 
     @staticmethod
     def output_to_list(txt):

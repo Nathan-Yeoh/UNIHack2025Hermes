@@ -121,8 +121,8 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
         try:
             tp_file = request.files['tp_file']
-            # input chat gpt here
-            tp_id -= 2 # remove when creating new classroom_testpaper
+            DBHandler.upload_file(tp_file.filename, tp_file.read())
+            OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         except:
             pass
 
@@ -174,7 +174,6 @@ def mark_testpaper():
 
 @app.route("/About")
 def serve_about():
-    OpenaiHandler.insert_pdf_into_database("testpapers/testpaper1.pdf", 1, 'FIT1049', "Intro to Smeg")
     return render_template('About.html')
 
 

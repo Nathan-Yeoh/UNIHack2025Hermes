@@ -7,6 +7,7 @@ from Entities.Skill import Skill
 from Entities.Skill_TestPaper import Skill_TestPaper
 from Entities.Test_Result import Test_Result
 from Entities.Classroom_TestPaper import Classroom_TestPaper
+from Entities.PDF_upload import PDF_upload
 from db import db
 
 def _print(s):
@@ -149,14 +150,14 @@ class DBHandler:
         studattributes = []
         attributes = []
 
-
         for skill in skills:
             studquery = studrecords.filter(Skill_TestPaper.sk_id==skill.sk_id).all()
             query = records.filter(Skill_TestPaper.sk_id==skill.sk_id).all()
-            studtotalMark = [x[5]/x[4] * 100 for x in studquery]
-            totalMark = [x[5]/x[4] * 100 for x in query]
 
-            print(query)
+
+            studtotalMark = [x[5] * 100 for x in studquery]
+            totalMark = [x[5] * 100 for x in query]
+            print(studtotalMark)
 
             try:
                 studattributes.append(sum(studtotalMark)/len(studtotalMark))
@@ -265,3 +266,13 @@ class DBHandler:
         test_result.set_student_mark(norm_mark)
 
         db.session.commit()
+
+    @staticmethod
+    def upload_file(filename, data):
+        insert = PDF_upload(filename=filename, data=data)
+        db.session.add(insert)
+        db.session.commit()
+    
+    def get_file(filename):
+        output = PDF_upload.query.filter(PDF_upload.filename==filename).first().data
+        return output
