@@ -171,6 +171,10 @@ class DBHandler:
         return studattributes, attributes
 
 
+    @staticmethod
+    def getTestResult(tp_id: int, tp):
+        #TODO
+        pass
 
     # === TEST PAPER METHODS === #
     @staticmethod

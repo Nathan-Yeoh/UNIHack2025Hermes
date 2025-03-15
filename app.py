@@ -138,7 +138,27 @@ def save_testpaper(cl_id: str, tp_id: int):
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
-    return render_template('TestPaperMark.html')
+    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    questions = DBHandler.getTestQuestionsByTpId(tp_id)
+    student = DBHandler.getStudentFromId(s_id)
+
+    print(classroom_testpaper)
+    print(questions)
+    print(student)
+    return render_template('TestPaperMark.html', classroom_testpaper=classroom_testpaper, questions=questions, student=student)
+
+
+@app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>")
+def mark_testpaper():
+    if request.method == "POST":
+        cl_id = request.form.get("cl_id")
+        tp_id = request.form.get("tp_id")
+        tp_id = request.form.get("tp_id")
+        q_length = request.form.get("q_length")
+
+    for i in range(1, q_length+1):
+        #TODO
+        pass
 
 
 @app.route("/About")
@@ -233,9 +253,9 @@ with app.app_context():
     dummyTestSkill9 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=2)
     dummyTestSkill10 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=8)
 
-    dummyTestResult1 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
-    dummyTestResult2 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
-    dummyTestResult3 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
+    dummyTestResult1 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=1, s_id=1, tr_mark=0.2)
+    dummyTestResult2 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=2, s_id=1, tr_mark=0.7)
+    dummyTestResult3 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=3, s_id=1, tr_mark=0.9)
 
     db.session.add(dummyTestPaper1)
     db.session.add(dummyTestPaper2)
