@@ -115,20 +115,16 @@ def serve_testpaper_create():
 def serve_testpaper_edit(cl_id: str, tp_id: int):
     if request.method == "POST":
         cl_id = request.form.get("cl_id")
-        tp_id = int(request.form.get("tp_id")) - 2
+        tp_id = int(request.form.get("tp_id"))
         tp_name = request.form.get("tp_name")
 
-        print("-" * 64)
-        print(tp_name)
-        print("-" * 64)
-
-        if tp_name is None or tp_name == "":
-            return redirect(url_for('serve_home'))
-        else:
+        try:
             tp_file = request.files['tp_file']
+            # input chat gpt here
+            tp_id -= 2 # remove when creating new classroom_testpaper
+        except:
+            pass
 
-    print(cl_id)
-    print(tp_id)
     classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
     # get the questions of the test as a tuple (question string, marks available)
     questions = DBHandler.getTestQuestionsByTpId(tp_id)
