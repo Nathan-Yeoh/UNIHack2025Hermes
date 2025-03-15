@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 
+from OpenaiHandler import OpenaiHandler
 from DBHandler import DBHandler
 from Entities.Classroom import Classroom
 from Entities.Classroom_TestPaper import Classroom_TestPaper
@@ -143,6 +144,7 @@ def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
 
 @app.route("/About")
 def serve_about():
+    OpenaiHandler.insert_pdf_into_database("testpapers/testpaper1.pdf", 1, 'FIT1049', "Intro to Smeg")
     return render_template('About.html')
 
 
@@ -208,53 +210,56 @@ with app.app_context():
     db.session.add(skill7)
     db.session.add(skill8)
 
-    cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
-    cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")
-    cTest3 = Classroom_TestPaper(cl_id="ENG1012", tp_id=3, cltp_name="Midsem 1012 test")
-    cTest4 = Classroom_TestPaper(cl_id="ENG1012", tp_id=4, cltp_name="Final 1012 test")
-    db.session.add(cTest1)
-    db.session.add(cTest2)
-    db.session.add(cTest3)
-    db.session.add(cTest4)
-
     #Delete This After TestPaper has been Implemented!!!!
-    dummyTestPaper1 = TestPaper(tp_id=1, tp_question_no=1, tp_question_text="12312", tp_question_total_mark=3)
-    dummyTestPaper2 = TestPaper(tp_id=1, tp_question_no=2, tp_question_text="12312", tp_question_total_mark=6)
-    dummyTestPaper3 = TestPaper(tp_id=1, tp_question_no=3, tp_question_text="12312", tp_question_total_mark=5)
-
-    dummyTestSkill1 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=1)
-    dummyTestSkill2 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=3)
-    dummyTestSkill3 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=4)
-    dummyTestSkill4 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=7)
-    dummyTestSkill5 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=4)
-    dummyTestSkill6 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=5)
-    dummyTestSkill7 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=6)
-    dummyTestSkill8 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=3)
-    dummyTestSkill9 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=2)
-    dummyTestSkill10 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=8)
-
-    dummyTestResult1 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
-    dummyTestResult2 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
-    dummyTestResult3 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
-
-    db.session.add(dummyTestPaper1)
-    db.session.add(dummyTestPaper2)
-    db.session.add(dummyTestPaper3)
-    db.session.add(dummyTestSkill1)
-    db.session.add(dummyTestSkill2)
-    db.session.add(dummyTestSkill3)
-    db.session.add(dummyTestSkill4)
-    db.session.add(dummyTestSkill5)
-    db.session.add(dummyTestSkill6)
-    db.session.add(dummyTestSkill7)
-    db.session.add(dummyTestSkill8)
-    db.session.add(dummyTestSkill9)
-    db.session.add(dummyTestSkill10)
-    db.session.add(dummyTestResult1)
-    db.session.add(dummyTestResult2)
-    db.session.add(dummyTestResult3)
+    #cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
+    #cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")
+    #cTest3 = Classroom_TestPaper(cl_id="ENG1012", tp_id=3, cltp_name="Midsem 1012 test")
+    #cTest4 = Classroom_TestPaper(cl_id="ENG1012", tp_id=4, cltp_name="Final 1012 test")
+    #db.session.add(cTest1)
+    #db.session.add(cTest2)
+    #db.session.add(cTest3)
+    #db.session.add(cTest4)
+#
+    #
+    #dummyTestPaper1 = TestPaper(tp_id=1, tp_question_no=1, tp_question_text="12312", tp_question_total_mark=3)
+    #dummyTestPaper2 = TestPaper(tp_id=1, tp_question_no=2, tp_question_text="12312", tp_question_total_mark=6)
+    #dummyTestPaper3 = TestPaper(tp_id=1, tp_question_no=3, tp_question_text="12312", tp_question_total_mark=5)
+#
+    #dummyTestSkill1 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=1)
+    #dummyTestSkill2 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=3)
+    #dummyTestSkill3 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=4)
+    #dummyTestSkill4 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=7)
+    #dummyTestSkill5 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=4)
+    #dummyTestSkill6 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=5)
+    #dummyTestSkill7 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=6)
+    #dummyTestSkill8 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=3)
+    #dummyTestSkill9 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=2)
+    #dummyTestSkill10 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=8)
+#
+    #dummyTestResult1 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
+    #dummyTestResult2 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
+    #dummyTestResult3 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
+#
+    #db.session.add(dummyTestPaper1)
+    #db.session.add(dummyTestPaper2)
+    #db.session.add(dummyTestPaper3)
+    #db.session.add(dummyTestSkill1)
+    #db.session.add(dummyTestSkill2)
+    #db.session.add(dummyTestSkill3)
+    #db.session.add(dummyTestSkill4)
+    #db.session.add(dummyTestSkill5)
+    #db.session.add(dummyTestSkill6)
+    #db.session.add(dummyTestSkill7)
+    #db.session.add(dummyTestSkill8)
+    #db.session.add(dummyTestSkill9)
+    #db.session.add(dummyTestSkill10)
+    #db.session.add(dummyTestResult1)
+    #db.session.add(dummyTestResult2)
+    #db.session.add(dummyTestResult3)
 
     db.session.commit()  # Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
+
+    
 
 
 if __name__ == "__main__":

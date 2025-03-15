@@ -224,3 +224,26 @@ class DBHandler:
         except Exception as e:
             _print(e)
             return -1
+    
+    @staticmethod
+    def add_to_classroom_testpaper(cl_id, tp_id, cltp_name):
+        insert = Classroom_TestPaper(cl_id=cl_id, tp_id=tp_id, cltp_name=cltp_name)
+        db.session.add(insert)
+        db.session.commit()
+    
+    @staticmethod
+    def add_to_testpaper(tp_id, tp_question_no, tp_question_text, tp_question_total_mark):
+        insert = TestPaper(tp_id=tp_id, tp_question_no=tp_question_no, tp_question_text=tp_question_text, tp_question_total_mark=tp_question_total_mark)
+        db.session.add(insert)
+        db.session.commit()
+    
+    @staticmethod
+    def add_to_skill_testpaper(tp_id, tp_question_no, sk_id):
+        insert = Skill_TestPaper(tp_id=tp_id, tp_question_no=tp_question_no, sk_id=sk_id)
+        db.session.add(insert)
+        db.session.commit()
+    
+    @staticmethod
+    def get_sk_id_by_name(sk_name):
+        return Skill.query.filter(Skill.sk_name==sk_name).first()
+    
