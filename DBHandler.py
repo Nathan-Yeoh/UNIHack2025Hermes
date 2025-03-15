@@ -94,7 +94,6 @@ class DBHandler:
             records = Student_Classroom.query.join(Student, Student_Classroom.s_id == Student.s_id).filter(Student_Classroom.cl_id ==
                                                                                                           cl_id).all()
             for record in records:
-                print(record.student.s_id, record.student.s_name)
                 students.append((record.student.s_id, record.student.s_name))
 
             return students
@@ -175,17 +174,32 @@ class DBHandler:
 
     # === TEST PAPER METHODS === #
     @staticmethod
-    def getTestPaperByClassTpId(cl_id: str, tp_id: int):
+    def getTestPaperByClTpId(cl_id: str, tp_id: int) -> TestPaper:
         """
-        Returns a Classroom_TestPaper object from an input of classroom ID and test paper ID
+        Returns a Classroom_TestPaper object from input of classroom ID and test paper ID
 
         :param cl_id:
         :param tp_id:
         :return:
         """
         try:
-            print(Classroom_TestPaper.query.get((cl_id, tp_id)))
             return Classroom_TestPaper.query.get((cl_id, tp_id))
+        except Exception as e:
+            _print(e)
+            return -1
+
+
+    @staticmethod
+    def getTestQuestionsByTpId(tp_id: int) -> list[tuple[str, int]]:
+        """
+        Takes the classroom ID and test paper ID and outputs a list of tuples organised as (question string, marks available)
+
+        :param tp_id:
+        :return:
+        """
+        try:
+            return TestPaper.query.filter_by(tp_id=tp_id).all()
+
         except Exception as e:
             _print(e)
             return -1

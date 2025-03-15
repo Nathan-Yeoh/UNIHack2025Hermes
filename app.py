@@ -1,38 +1,38 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
-#from flask_login import LoginManager, login_user, login_required, current_user, logout_user
-from datetime import datetime, timedelta
+from flask import Flask, render_template, request, jsonify
 
-from db import db
 from DBHandler import DBHandler
-from Entities.Teacher import Teacher
 from Entities.Classroom import Classroom
-from Entities.Student_Classroom import Student_Classroom
-from Entities.Student import Student
-from Entities.Skill import Skill
-from Entities.TestPaper import TestPaper
-from Entities.Skill_TestPaper import Skill_TestPaper
-from Entities.Test_Result import Test_Result
 from Entities.Classroom_TestPaper import Classroom_TestPaper
+from Entities.Skill import Skill
+from Entities.Skill_TestPaper import Skill_TestPaper
+from Entities.Student import Student
+from Entities.Student_Classroom import Student_Classroom
+from Entities.Teacher import Teacher
+from Entities.TestPaper import TestPaper
+from Entities.Test_Result import Test_Result
+from db import db
+
+# from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
-#login_manager = LoginManager()
-#login_manager.init_app(app)
-#login_manager.login_view = "serve_login"  # redirect here if not logged in
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+# login_manager.login_view = "serve_login"  # redirect here if not logged in
 
 
 db.init_app(app)
 
+
 @app.route("/")
-#@login_required
+# @login_required
 def serve_home():
     classroom = DBHandler.get_classroom_by_teacher(t_id=1)
     return render_template('Home.html', classroom=classroom)
-    
+
     # if request.method == "POST": # this is going to run after making a new classroom
     #     classroom = Classroom()
     #     classroom.name = request.form.get("classroomName")
@@ -41,10 +41,11 @@ def serve_home():
     # all_classrooms = DBHandler.getAllClassrooms()
     # return render_template('Home.html', all_classrooms = all_classrooms)
 
+
 # API route to provide chart data
 @app.route('/chart-data')
 def chart_data():
-    # student = DBHandler.getStudentFromId(s_id=s_id)
+    # student = DBHandler.getStudentFromId(s_id=s_id) TODO this ?might? be used to make radar chart
     data = {
         "labels": ["Speed", "Strength", "Agility", "Endurance", "Flexibility"],
         "datasets": [
@@ -66,20 +67,20 @@ def chart_data():
     }
     return jsonify(data)
 
+
 @app.route("/Classroom/<string:cl_id>", methods=["GET", "POST"])
 def serve_classroom(cl_id: str):
-
     if request.method == "POST":
-        # get all test papers from this classroom
+        # get the classroom ID
         cl_id = request.form.get("cl_id")
+
+    # get all test papers from this classroom
     test_papers = DBHandler.getTestPapersByClassroom(cl_id)
-    print("===test_papers===")
-    print(test_papers)
     # get all students in this classroom
     students = DBHandler.getStudentsByClassroom(cl_id)
 
+    return render_template('Classroom.html', cl_id=cl_id, test_papers=test_papers, students=students)
 
-    return render_template('Classroom.html', classroom_id = cl_id, test_papers=test_papers, students=students)
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
@@ -92,6 +93,7 @@ def serve_student_graph():
     studattributes, attributes = DBHandler.get_attribute_values(s_id=s_id, cl_id=cl_id)
     return render_template('StudentGraph.html', skillnames=skillnames, student=student, studattributes=studattributes, attributes=attributes, classroom_id=cl_id)
 
+
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper(cl_id: str, tp_id: int):
     if request.method == "POST":
@@ -100,34 +102,47 @@ def serve_testpaper(cl_id: str, tp_id: int):
         test_file = request.form.get("tfile")
 
     students = DBHandler.getStudentsByClassroom(cl_id)
-    classroom_testpaper = DBHandler.getTestPaperByClassTpId(cl_id, tp_id)
-    return render_template('TestPaper.html', students=students, test_paper=classroom_testpaper)
+    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    return render_template('TestPaper.html', cl_id=cl_id, students=students, classroom_testpaper=classroom_testpaper)
+
 
 @app.route("/Classroom/TestPaper/Create")
 def serve_testpaper_create():
     return render_template('TestPaperCreate.html')
 
+
 @app.route("/Classroom/TestPaper/Edit/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper_edit(cl_id: str, tp_id: int):
+    if request.method == "POST":
+        cl_id = request.form.get("cl_id")
+        tp_id = request.form.get("tp_id")
 
-    return render_template('TestPaperEdit.html')
+    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    # get the questions of the test as a tuple (question string, marks available)
+    questions = DBHandler.getTestQuestionsByTpId(tp_id)
+
+    return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions)
+
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
     return render_template('TestPaperMark.html')
 
+
 @app.route("/About")
 def serve_about():
     return render_template('About.html')
+
 
 @app.route("/Credit")
 def serve_credit():
     return render_template('Credit.html')
 
+
 with app.app_context():
     db.drop_all()
     db.create_all()
-    
+
     Sankinator = Teacher(t_id=1, t_username='MrSankey')
     db.session.add(Sankinator)
 
@@ -149,12 +164,12 @@ with app.app_context():
     db.session.add(class1)
     db.session.add(class2)
 
-    cAdam =  Student_Classroom(cl_id='FIT1049', s_id=1)
-    cWroe =  Student_Classroom(cl_id='FIT1049', s_id=2)
+    cAdam = Student_Classroom(cl_id='FIT1049', s_id=1)
+    cWroe = Student_Classroom(cl_id='FIT1049', s_id=2)
     cSmart = Student_Classroom(cl_id='FIT1049', s_id=3)
-    cPant =  Student_Classroom(cl_id='ENG1012', s_id=4)
+    cPant = Student_Classroom(cl_id='ENG1012', s_id=4)
     cKoolaid = Student_Classroom(cl_id='ENG1012', s_id=5)
-    cHelp =  Student_Classroom(cl_id='ENG1012', s_id=6)
+    cHelp = Student_Classroom(cl_id='ENG1012', s_id=6)
     db.session.add(cAdam)
     db.session.add(cWroe)
     db.session.add(cSmart)
@@ -162,7 +177,7 @@ with app.app_context():
     db.session.add(cKoolaid)
     db.session.add(cHelp)
 
-    #Please replace these im very tired and cant think of good skills. like how tf u write a question about communication?
+    # Please replace these im very tired and cant think of good skills. like how tf u write a question about communication?
     skill1 = Skill(sk_id=1, sk_name='Creativity', sk_desc='Lorem Ipsum')
     skill2 = Skill(sk_id=2, sk_name='Logical Reasoning', sk_desc='Lorem Ipsum')
     skill3 = Skill(sk_id=3, sk_name='Perception', sk_desc='Lorem Ipsum')
@@ -196,7 +211,7 @@ with app.app_context():
     dummyTestPaper3 = TestPaper(tp_id=1, tp_question_no=3, tp_question_text="12312", tp_question_total_mark=5)
 
     dummyTestSkill1 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=1)
-    dummyTestSkill2 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=3) 
+    dummyTestSkill2 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=3)
     dummyTestSkill3 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=4)
     dummyTestSkill4 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=7)
     dummyTestSkill5 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=4)
@@ -226,8 +241,8 @@ with app.app_context():
     db.session.add(dummyTestResult1)
     db.session.add(dummyTestResult2)
     db.session.add(dummyTestResult3)
-    
-    db.session.commit() #Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
+
+    db.session.commit()  # Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
 
 
 if __name__ == "__main__":

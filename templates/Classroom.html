@@ -4,47 +4,85 @@
 
 <p></p>
 <div class="content">
-<h1>Classroom - {{classroom_id}}</h1>
+  <h1>Classroom - {{cl_id}}</h1>
 
-<div class="flex-container" >
-  <h2>Test Papers</h2>
-
-  <div class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card ">
-          <div class="card-header">
+  <div class="row" style="display: flex; flex-wrap: wrap;">
+    <div class="flex-container" style="flex: 1; margin-right: 10px;">
+      <h2>Test Papers</h2>
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header">
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter " id="">
+                    <thead class=" text-primary">
+                    <tr>
+                      <th>Test Name</th>
+                      <th>Edit Test</th>
+                      <th>Mark Test</th>
+                    </tr>
+                    </thead>
+                    {% for test_paper in test_papers %}
+                    <tr>
+                      <td>{{test_paper.get_cltp_name()}}</td>
+                      <td>
+                        <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=test_paper.get_tp_id())}}" method="POST">
+                          <input name="cl_id" type="hidden" value="{{cl_id}}">
+                          <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
+                          <button type="submit"><i class="tim-icons icon-pencil"></i></button>
+                        </form>
+                      </td>
+                      <td>
+                        <form action="{{url_for('serve_testpaper', cl_id=cl_id, tp_id=test_paper.get_tp_id())}}" method="POST">
+                          <input name="cl_id" type="hidden" value="{{cl_id}}">
+                          <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
+                          <button type="submit"><i class="tim-icons icon-check-2"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table tablesorter " id="">
-                <thead class=" text-primary">
-                <tr>
-                  <th>Test Name</th>
-                  <th>Edit Test</th>
-                  <th>Mark Test</th>
-                </tr>
-                </thead>
-                {% for test_paper in test_papers %}
-                <tr>
-                  <td>{{test_paper.get_cltp_name()}}</td>
-                  <td>
-                    <form action="{{url_for('serve_testpaper_edit', cl_id=classroom_id, tp_id=test_paper.get_tp_id())}}" method="POST">
-                      <input name="cl_id" type="hidden" value="{{classroom_id}}">
-                      <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
-                      <button type="submit"><i class="tim-icons icon-pencil"></i></button>
-                    </form>
-                  </td>
-                  <td>
-                    <form action="{{url_for('serve_testpaper', cl_id=classroom_id, tp_id=test_paper.get_tp_id())}}" method="POST">
-                      <input name="cl_id" type="hidden" value="{{classroom_id}}">
-                      <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
-                      <button type="submit"><i class="tim-icons icon-check-2"></i></button>
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-              </table>
+        </div>
+      </div>
+    </div>
+    <div class="flex-container" style="flex: 1; margin-right: 10px;">
+      <h2>Students</h2>
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header">
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter">
+                    <thead class=" text-primary">
+                    <tr>
+                      <th>Name</th>
+                      <th>View</th>
+                    </tr>
+                    </thead>
+                    {% for student in students %}
+                    <tr>
+                      <td>{{student[1]}}</td>
+                      <td>
+                        <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
+                          <input name="s_id" type="hidden" value="{{student[0]}}">
+                          <button type="submit"><i class="tim-icons icon-atom"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -52,43 +90,4 @@
     </div>
   </div>
 </div>
-<div class="flex-container">
-  <h2>Students</h2>
-  <div class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card ">
-          <div class="card-header">
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table tablesorter">
-                <thead class=" text-primary">
-                <tr>
-                  <th>Name</th>
-                  <th>View</th>
-                </tr>
-                </thead>
-                {% for student in students %}
-                <tr>
-                  <td>{{student[1]}}</td>
-                  <td>
-                    <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
-                      <input name="s_id" type="hidden" value="{{student[0]}}">
-                      <input name="cl_id" type="hidden" value="{{classroom_id}}">
-                      <button type="submit"><i class="tim-icons icon-atom"></i></button>
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-{{ classrooms }}
 {% endblock %}
