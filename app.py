@@ -86,11 +86,11 @@ def serve_student_graph():
     if request.method == "POST":
         s_id = request.form.get("s_id")
         cl_id = request.form.get("cl_id")
-        print(s_id)
+        print(cl_id)
     skillnames = DBHandler.get_all_skill_names()
     student = DBHandler.getStudentFromId(s_id=s_id)
     studattributes, attributes = DBHandler.get_attribute_values(s_id=s_id, cl_id=cl_id)
-    return render_template('StudentGraph.html', skillnames=skillnames, student=student, studattributes=studattributes, attributes=attributes)
+    return render_template('StudentGraph.html', skillnames=skillnames, student=student, studattributes=studattributes, attributes=attributes, classroom_id=cl_id)
 
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper(cl_id: str, tp_id: int):
@@ -183,8 +183,8 @@ with app.app_context():
 
     cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
     cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")
-    cTest3 = Classroom_TestPaper(cl_id="ENG1012", tp_id=1, cltp_name="Midsem 1012 test")
-    cTest4 = Classroom_TestPaper(cl_id="ENG1012", tp_id=2, cltp_name="Final 1012 test")
+    cTest3 = Classroom_TestPaper(cl_id="ENG1012", tp_id=3, cltp_name="Midsem 1012 test")
+    cTest4 = Classroom_TestPaper(cl_id="ENG1012", tp_id=4, cltp_name="Final 1012 test")
     db.session.add(cTest1)
     db.session.add(cTest2)
     db.session.add(cTest3)
@@ -206,9 +206,9 @@ with app.app_context():
     dummyTestSkill9 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=2)
     dummyTestSkill10 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=8)
 
-    dummyTestResult1 = Test_Result(cl_id=1, tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
-    dummyTestResult2 = Test_Result(cl_id=1, tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
-    dummyTestResult3 = Test_Result(cl_id=1, tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
+    dummyTestResult1 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
+    dummyTestResult2 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
+    dummyTestResult3 = Test_Result(cl_id="FIT1049", tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
 
     db.session.add(dummyTestPaper1)
     db.session.add(dummyTestPaper2)

@@ -133,19 +133,18 @@ class DBHandler:
     
     @staticmethod
     def get_attribute_values(s_id, cl_id):
-
         studrecords = db.session.query(Test_Result, TestPaper, Skill_TestPaper).filter(
                         Test_Result.s_id==s_id).join(
                         TestPaper, (TestPaper.tp_id == Test_Result.tp_id) & (TestPaper.tp_question_no == Test_Result.tp_question_no)).join(
                         Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).with_entities(
                         Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark)
         
-        records = db.session.query(Test_Result, TestPaper, Skill_TestPaper, Classroom_TestPaper).join(
-                        Classroom_TestPaper, Classroom_TestPaper.tp_id == Test_Result.tp_id).filter(
+        records = db.session.query(Classroom_TestPaper, Test_Result, TestPaper, Skill_TestPaper ).filter(
                         Classroom_TestPaper.cl_id == cl_id).join(
+                        Test_Result,Classroom_TestPaper.tp_id == Test_Result.tp_id).join(
                         TestPaper, (TestPaper.tp_id == Test_Result.tp_id) & (TestPaper.tp_question_no == Test_Result.tp_question_no)).join(
                         Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).with_entities(
-                        Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark)
+                        Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark, Classroom_TestPaper)
 
         skills = Skill.query.all()
         studattributes = []
@@ -157,6 +156,8 @@ class DBHandler:
             query = records.filter(Skill_TestPaper.sk_id==skill.sk_id).all()
             studtotalMark = [x[5]/x[4] * 100 for x in studquery]
             totalMark = [x[5]/x[4] * 100 for x in query]
+
+            print(query)
 
             try:
                 studattributes.append(sum(studtotalMark)/len(studtotalMark))
