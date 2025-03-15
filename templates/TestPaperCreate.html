@@ -1,4 +1,22 @@
 {% extends "layouts/base.html" %}
 {% block content %}
+<div class="content">
+    <p></p>
+    <h1>New Test</h1>
 
+    <!-- form inputs -->
+    <div class="card" style="height: calc(95vh - 90px)">
+        <div class="col-12">
+            <form action="{{url_for('serve_testpaper', tname=tname, tfile=tfile)}}" method="post" style="margin-top: 15px; height: 100%;">
+                <label for="tname">Test paper name:</label><br>
+                <input type="text" id="tname" name="tname" required><br>
+
+                <label for="tfile" style="position: relative; top: 10px">Select a file:</label><br>
+                <input type="file" class="btn" id="tfile" name="tfile" required><br>
+                
+                <input type="submit" value="Submit" class="btn" style="position: absolute; bottom: 15px;">
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

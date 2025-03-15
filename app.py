@@ -92,6 +92,11 @@ def serve_student_graph():
 
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper(cl_id: str, tp_id: int):
+    if request.method == "POST":
+        # get test paper from creation
+        test_name = request.form.get("tname")
+        test_file = request.form.get("tfile")
+
     students = DBHandler.getStudentsByClassroom(cl_id)
     classroom_testpaper = DBHandler.getTestPaperByClassTpId(cl_id, tp_id)
     return render_template('TestPaper.html', students=students, test_paper=classroom_testpaper)
