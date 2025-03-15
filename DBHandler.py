@@ -131,18 +131,43 @@ class DBHandler:
     # === TEST_RESULT METHODS === #
     
     @staticmethod
-    def get_attribute_value_list_by_s_id(s_id):
-        records = Test_Result.query.filter(Test_Result.s_id==s_id).join(
-            TestPaper, TestPaper.tp_id == Test_Result.tp_id, TestPaper.tp_question_no == Test_Result.tp_question_no).join(
-                Skill_TestPaper, TestPaper.tp_question_no == Skill_TestPaper.tp_question_no, TestPaper.tp_id == Skill_TestPaper.tp_id).query(
-                    Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark).all()
+    def get_attribute_values(s_id, cl_id):
+
+        studrecords = db.session.query(Test_Result, TestPaper, Skill_TestPaper).filter(
+                        Test_Result.s_id==s_id).join(
+                        TestPaper, (TestPaper.tp_id == Test_Result.tp_id) & (TestPaper.tp_question_no == Test_Result.tp_question_no)).join(
+                        Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).with_entities(
+                        Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark)
         
+        records = db.session.query(Test_Result, TestPaper, Skill_TestPaper, Classroom_TestPaper).join(
+                        Classroom_TestPaper, Classroom_TestPaper.tp_id == Test_Result.tp_id).filter(
+                        Classroom_TestPaper.cl_id == cl_id).join(
+                        TestPaper, (TestPaper.tp_id == Test_Result.tp_id) & (TestPaper.tp_question_no == Test_Result.tp_question_no)).join(
+                        Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).with_entities(
+                        Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark)
+
         skills = Skill.query.all()
+        studattributes = []
         attributes = []
 
+
         for skill in skills:
-            attributes.append
-        
+            studquery = studrecords.filter(Skill_TestPaper.sk_id==skill.sk_id).all()
+            query = records.filter(Skill_TestPaper.sk_id==skill.sk_id).all()
+            studtotalMark = [x[5]/x[4] * 100 for x in studquery]
+            totalMark = [x[5]/x[4] * 100 for x in query]
+
+            try:
+                studattributes.append(sum(studtotalMark)/len(studtotalMark))
+            except:
+                studattributes.append(0)
+            
+            try:
+                attributes.append(sum(totalMark)/len(totalMark))
+            except:
+                attributes.append(0)
+    
+        return studattributes, attributes
 
 
 

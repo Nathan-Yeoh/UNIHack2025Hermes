@@ -84,10 +84,12 @@ def serve_classroom(cl_id: str):
 def serve_student_graph():
     if request.method == "POST":
         s_id = request.form.get("s_id")
-
+        cl_id = request.form.get("cl_id")
+        print(s_id)
     skillnames = DBHandler.get_all_skill_names()
     student = DBHandler.getStudentFromId(s_id=s_id)
-    return render_template('StudentGraph.html', skillnames=skillnames, student=student)
+    studattributes, attributes = DBHandler.get_attribute_values(s_id=s_id, cl_id=cl_id)
+    return render_template('StudentGraph.html', skillnames=skillnames, student=student, studattributes=studattributes, attributes=attributes)
 
 
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
@@ -201,6 +203,44 @@ with app.app_context():
     db.session.add(cTest3)
     db.session.add(cTest4)
 
+    #Delete This After TestPaper has been Implemented!!!!
+    dummyTestPaper1 = TestPaper(tp_id=1, tp_question_no=1, tp_question_text="12312", tp_question_total_mark=3)
+    dummyTestPaper2 = TestPaper(tp_id=1, tp_question_no=2, tp_question_text="12312", tp_question_total_mark=6)
+    dummyTestPaper3 = TestPaper(tp_id=1, tp_question_no=3, tp_question_text="12312", tp_question_total_mark=5)
+
+    dummyTestSkill1 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=1)
+    dummyTestSkill2 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=3)
+    dummyTestSkill3 = Skill_TestPaper(tp_id=1,tp_question_no=1,sk_id=4)
+    dummyTestSkill4 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=7)
+    dummyTestSkill5 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=4)
+    dummyTestSkill6 = Skill_TestPaper(tp_id=1,tp_question_no=2,sk_id=5)
+    dummyTestSkill7 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=6)
+    dummyTestSkill8 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=3)
+    dummyTestSkill9 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=2)
+    dummyTestSkill10 = Skill_TestPaper(tp_id=1,tp_question_no=3,sk_id=8)
+
+    dummyTestResult1 = Test_Result(cl_id=1, tp_id=1, tp_question_no=1, s_id=1, tr_mark=2)
+    dummyTestResult2 = Test_Result(cl_id=1, tp_id=1, tp_question_no=2, s_id=1, tr_mark=5)
+    dummyTestResult3 = Test_Result(cl_id=1, tp_id=1, tp_question_no=3, s_id=1, tr_mark=3)
+
+    db.session.add(dummyTestPaper1)
+    db.session.add(dummyTestPaper2)
+    db.session.add(dummyTestPaper3)
+    db.session.add(dummyTestSkill1)
+    db.session.add(dummyTestSkill2)
+    db.session.add(dummyTestSkill3)
+    db.session.add(dummyTestSkill4)
+    db.session.add(dummyTestSkill5)
+    db.session.add(dummyTestSkill6)
+    db.session.add(dummyTestSkill7)
+    db.session.add(dummyTestSkill8)
+    db.session.add(dummyTestSkill9)
+    db.session.add(dummyTestSkill10)
+    db.session.add(dummyTestResult1)
+    db.session.add(dummyTestResult2)
+    db.session.add(dummyTestResult3)
+
+    db.session.commit() #Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
     testQuest1 = TestPaper(tp_id=1, tp_question_no=1, tp_question_text="1012 question?", tp_question_total_mark=3)
     testQuest2 = TestPaper(tp_id=1, tp_question_no=2, tp_question_text="1049 Midsem q?", tp_question_total_mark=5)
     testQuest3 = TestPaper(tp_id=2, tp_question_no=1, tp_question_text="1012 final q?", tp_question_total_mark=10)
@@ -217,6 +257,7 @@ with app.app_context():
     db.session.add(testQuest7)
 
     db.session.commit()  # Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
+
 
 if __name__ == "__main__":
     app.run(debug=True)

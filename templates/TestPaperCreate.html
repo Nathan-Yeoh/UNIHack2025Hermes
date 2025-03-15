@@ -5,9 +5,9 @@
     <h1>New Test</h1>
 
     <!-- form inputs -->
-    <div class="card" style="height: calc(95vh - 90px)">
+    <div class="card" style="height: calc(95vh - 100px)">
         <div class="col-12">
-            <form action="{{url_for('serve_testpaper', tname=tname, tfile=tfile)}}" method="post" style="margin-top: 15px; height: 100%;">
+            <form action="" method="post" style="margin-top: 15px; height: 100%;">
                 <label for="tname">Test paper name:</label><br>
                 <input type="text" id="tname" name="tname" required><br>
 
@@ -19,4 +19,5 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} 
+<!--{{url_for('serve_testpaper', tname=tname, tfile=tfile)}}-->
