@@ -1,3 +1,4 @@
+from Entities.Classroom_TestPaper import Classroom_TestPaper
 from Entities.Student import Student
 from Entities.Classroom import Classroom
 from Entities.Student_Classroom import Student_Classroom
@@ -70,21 +71,29 @@ class DBHandler:
         :return:
         """
         try:
-            return TestPaper.query.filter_by(cl_id=cl_id)
+            return Classroom_TestPaper.query.filter_by(cl_id=cl_id).all()
         except Exception as e:
             _print(e)
             return -1
 
     @staticmethod
-    def getStudentsByClassroom(cl_id: str) -> list[Student]:
+    def getStudentsByClassroom(cl_id: str) -> list[int, str]:
         """
-
+        Returns the list of student IDs as a list of integers
 
         :param cl_id:
         :return:
         """
         try:
-            return Student_Classroom.query.filter_by(cl_id=cl_id)
+            students = []
+            records = Student_Classroom.query.join(Student, Student_Classroom.s_id == Student.s_id).filter(Student_Classroom.cl_id ==
+                                                                                                          cl_id).all()
+            print("here")
+            for record in records:
+                print(record.student.s_id, record.student.s_name)
+                students.append((record.student.s_id, record.student.s_name))
+
+            return students
         except Exception as e:
             _print(e)
             return -1

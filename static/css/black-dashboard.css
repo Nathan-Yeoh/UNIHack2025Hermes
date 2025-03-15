@@ -11643,7 +11643,7 @@ table.tablesorter thead tr .headerSortDown {
 .main-panel {
   position: relative;
   float: right;
-  width: 100%;
+  width: 85%;
   min-height: 100vh;
   border-top: 2px solid #e14eca;
   background: linear-gradient(#1e1e2f, #1e1e24);

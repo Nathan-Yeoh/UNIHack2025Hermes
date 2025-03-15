@@ -38,12 +38,12 @@ def serve_home():
         DBHandler.addClassroom(classroom)
 
     all_classrooms = DBHandler.getAllClassrooms()
-    return render_template('Home.html', allClassrooms = all_classrooms)
+    return render_template('Home.html', all_classrooms = all_classrooms)
 
 # API route to provide chart data
 @app.route('/chart-data')
 def chart_data():
-    student = DBHandler.getStudentFromId(s_id=s_id)
+    # student = DBHandler.getStudentFromId(s_id=s_id)
     data = {
         "labels": ["Speed", "Strength", "Agility", "Endurance", "Flexibility"],
         "datasets": [
@@ -71,17 +71,17 @@ def serve_classroom(cl_id:str):
         # get all test papers from this classroom
         cl_id = request.form.get("cl_id")
         test_papers = DBHandler.getTestPapersByClassroom(cl_id)
-
+        print(test_papers)
         # get all students in this classroom
         students = DBHandler.getStudentsByClassroom(cl_id)
         print(students)
 
-        return render_template('Classroom.html', testPapers=test_papers, students=students)
+        return render_template('Classroom.html', test_papers=test_papers, students=students)
 
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
-    return render_template('index.html')
+    return render_template('StudentGraph.html')
 
 @app.route("/Classroom/TestPaper", methods=["GET", "POST"])
 def serve_testpaper():
@@ -158,6 +158,15 @@ with app.app_context():
     db.session.add(Awareness)
     db.session.add(Management)
     db.session.add(Communication)
+
+    cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
+    cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")
+    cTest3 = Classroom_TestPaper(cl_id="FIT1012", tp_id=1, cltp_name="Midsem 1012 test")
+    cTest4 = Classroom_TestPaper(cl_id="FIT1012", tp_id=2, cltp_name="Final 1012 test")
+    db.session.add(cTest1)
+    db.session.add(cTest2)
+    db.session.add(cTest3)
+    db.session.add(cTest4)
 
     db.session.commit() #Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
 
