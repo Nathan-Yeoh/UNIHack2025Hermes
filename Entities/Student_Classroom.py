@@ -5,4 +5,5 @@ class Student_Classroom(db.Model):
 
     cl_id = db.Column(db.String(7), db.ForeignKey("Classroom.cl_id", ondelete="CASCADE"), primary_key=True)
     s_id = db.Column(db.Integer, db.ForeignKey("Student.s_id", ondelete="CASCADE"), primary_key=True)
-    
+
+    student = db.relationship("Student", backref="classrooms")

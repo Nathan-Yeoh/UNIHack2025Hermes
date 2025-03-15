@@ -1,4 +1,15 @@
 {% extends "layouts/base.html" %}
 {% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Radar Chart</h2>
+    <canvas id="radarChart"></canvas>
+    <script src="{{ url_for('static', filename='test-chart.js') }}"></script>
+</body>
 
 {% endblock %}

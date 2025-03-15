@@ -5,20 +5,14 @@
       -->
         <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="javascript:void(0)" class="simple-text logo-mini">
+                <a href="/" class="simple-text logo-mini">
                     H
                 </a>
-                <a href="javascript:void(0)" class="simple-text logo-normal">
+                <a href="/" class="simple-text logo-normal">
                     Hermes
                 </a>
             </div>
             <ul class="nav">
-                <li class="{% if 'user' in segment %} active {% endif %}">
-                    <a href="">
-                        <i class="tim-icons icon-single-02"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
                 <li class="{% if 'tables' in segment %} active {% endif %}">
                     <a href="{{url_for('serve_home')}}">
                         <i class="tim-icons icon-puzzle-10"></i>

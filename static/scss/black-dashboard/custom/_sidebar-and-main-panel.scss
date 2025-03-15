@@ -435,7 +435,7 @@
 .main-panel {
     position: relative;
     float: right;
-    width: $full-width;
+    width: full-width;
     min-height: 100vh;
     border-top: 2px solid $primary;
     background: linear-gradient($background-black, $background-states-black);
