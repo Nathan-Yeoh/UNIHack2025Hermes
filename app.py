@@ -77,7 +77,7 @@ def serve_classroom(cl_id:str):
         students = DBHandler.getStudentsByClassroom(cl_id)
         print(students)
 
-        return render_template('Classroom.html', test_papers=test_papers, students=students)
+        return render_template('Classroom.html', classroom_id = cl_id, test_papers=test_papers, students=students)
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
