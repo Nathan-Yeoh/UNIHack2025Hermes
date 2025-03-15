@@ -1,22 +1,59 @@
 {% extends "layouts/base.html" %}
 {% block content %}
-<div class="content">
-    <p></p>
-    <h1>New Test</h1>
+<body>
+    <div class="content">
+        <p></p>
+        <h1>New Test</h1>
 
-    <!-- form inputs -->
-    <div class="card" style="height: calc(95vh - 90px)">
-        <div class="col-12">
-            <form action="{{url_for('serve_testpaper', tname=tname, tfile=tfile)}}" method="post" style="margin-top: 15px; height: 100%;">
-                <label for="tname">Test paper name:</label><br>
-                <input type="text" id="tname" name="tname" required><br>
+        <!-- form inputs -->
+        <div class="row">
+            <div class="card">
+                <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+                    <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=tp_id)}}">
+                        <!-- name input -->
+                        <label for="tname">Test paper name:</label><br>
+                        <input type="text" id="tname" name="tname" required><br>
 
-                <label for="tfile" style="position: relative; top: 10px">Select a file:</label><br>
-                <input type="file" class="btn" id="tfile" name="tfile" required><br>
-                
-                <input type="submit" value="Submit" class="btn" style="position: absolute; bottom: 15px;">
-            </form>
+                        <!-- file input -->
+                        <label for="tfile" style="position: relative; top: 10px">Select a file:</label><br>
+                        <input type="file" class="btn" id="tfile" name="tfile" required><br>
+
+                        <!-- generate button -->
+                        <input type="submit" class="btn" value="Generate">
+
+                        <!-- hidden inputs -->
+                        <!-- <input type="hidden" id="cl_id" value="{{cl_id}}">
+                        <input type="hidden" id="tp_id" value={{tp_id}}> -->
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+</body>
+
+<!-- style="height: calc(95vh - 90px)" -->
+<!-- style="position: absolute; bottom: 15px;" -->
+<!-- table question outputs -->
+<!-- <div class="row">
+<div class="card" style="margin-bottom: 0px;">
+    <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+        <button type="button" onclick="publish()" class="btn">Publish</button>
+    </div>
 </div>
+</div>
+
+<script>
+    function generate_file() {
+        var test_url = "{{url_for('generate_file')}}"
+
+        var test_name = document.getElementById("tname").nodeValue
+        var test_file = document.getElementById("tfile").nodeValue
+        alert(test_file)
+        
+    }
+
+    function publish() {
+        location.href = "{{url_for('serve_home')}}"
+    }
+</script> -->
 {% endblock %}
