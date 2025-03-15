@@ -48,13 +48,10 @@
 
         <div class="main-panel">
 
-            {% include 'includes/navigation.html' %}
-
             {% block content %}{% endblock content %}
 
-            {% include 'includes/footer.html' %}
-
         </div>
+        {% include 'includes/footer.html' %}
     </div>
 
     {% include 'includes/fixed-plugin.html' %}
