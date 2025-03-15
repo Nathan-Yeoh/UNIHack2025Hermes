@@ -4,10 +4,12 @@ from DBHandler import DBHandler
 from Entities.Classroom import Classroom
 from Entities.Classroom_TestPaper import Classroom_TestPaper
 from Entities.Skill import Skill
+from Entities.Skill_TestPaper import Skill_TestPaper
 from Entities.Student import Student
 from Entities.Student_Classroom import Student_Classroom
 from Entities.Teacher import Teacher
 from Entities.TestPaper import TestPaper
+from Entities.Test_Result import Test_Result
 from db import db
 
 # from flask_login import LoginManager, login_user, login_required, current_user, logout_user
@@ -239,22 +241,6 @@ with app.app_context():
     db.session.add(dummyTestResult1)
     db.session.add(dummyTestResult2)
     db.session.add(dummyTestResult3)
-
-    db.session.commit() #Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
-    testQuest1 = TestPaper(tp_id=1, tp_question_no=1, tp_question_text="1012 question?", tp_question_total_mark=3)
-    testQuest2 = TestPaper(tp_id=1, tp_question_no=2, tp_question_text="1049 Midsem q?", tp_question_total_mark=5)
-    testQuest3 = TestPaper(tp_id=2, tp_question_no=1, tp_question_text="1012 final q?", tp_question_total_mark=10)
-    testQuest4 = TestPaper(tp_id=2, tp_question_no=2, tp_question_text="1012 final q2?", tp_question_total_mark=2)
-    testQuest5 = TestPaper(tp_id=3, tp_question_no=1, tp_question_text="what the sigma?", tp_question_total_mark=2)
-    testQuest6 = TestPaper(tp_id=3, tp_question_no=2, tp_question_text="I am 1049?", tp_question_total_mark=5)
-    testQuest7 = TestPaper(tp_id=4, tp_question_no=1, tp_question_text="STILL?", tp_question_total_mark=5)
-    db.session.add(testQuest1)
-    db.session.add(testQuest2)
-    db.session.add(testQuest3)
-    db.session.add(testQuest4)
-    db.session.add(testQuest5)
-    db.session.add(testQuest6)
-    db.session.add(testQuest7)
 
     db.session.commit()  # Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
 
