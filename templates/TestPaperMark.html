@@ -2,7 +2,9 @@
 {% block title %} Marking Test {% endblock %}
 {% block content %}
 <div class="content">
-  <h1> {{cltp_name}} - {{s_name}} </h1>
+  <p></p>
+  <h1> {{classroom_testpaper.get_cltp_name()}} - {{student.get_s_name()}} </h1>
+
 
 </div>
 {% endblock %}
