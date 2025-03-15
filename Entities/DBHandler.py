@@ -1,8 +1,12 @@
-from Entities.Classroom_TestPaper import Classroom_TestPaper
 from Entities.Student import Student
 from Entities.Classroom import Classroom
 from Entities.Student_Classroom import Student_Classroom
 from Entities.TestPaper import TestPaper
+from Entities.Teacher import Teacher
+from Entities.Skill import Skill
+from Entities.Skill_TestPaper import Skill_TestPaper
+from Entities.Test_Result import Test_Result
+from Entities.Classroom_TestPaper import Classroom_TestPaper
 from db import db
 
 def _print(s):
@@ -113,4 +117,11 @@ class DBHandler:
         except Exception as e:
             _print(e)
             return -1
+
+
+
+    def get_classroom_by_teacher(t_id):
+        query = Classroom.query.filter_by(t_id=t_id)
+        return query
+
 

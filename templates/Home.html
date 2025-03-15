@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% block title %} Home {% endblock %}
 {% block content %}
 <h1> Your Classrooms </h1>
 <head>
@@ -13,6 +14,32 @@
 </form>
 {% endfor %}
 
+<div class="content">
+    <p></p>
+    <h1>Classrooms</h1>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body all-icons">
+            <div class="row" style="display: flex; flex-wrap: wrap;">
+                {% for class in classroom %}
+                <form class="button-container" action="{{url_for('serve_classroom', cl_id='class.cl_id')}}" method="POST" style=" width: 100%; margin-left: -80%;">
+                        <input name="cl_id" type="hidden" value={{class.cl_id}}> <!--FIXME -->
+                        <button class="font-icon-list col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-6 close" type="submit" value="Submit" >
+                                <div class="font-icon-detail">
+                                  <i class="tim-icons icon-book-bookmark"></i>
+                                  <p>{{class.cl_id}}</p>
+                                </div>
+                        </button>
+                </form>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
 
 </body>
 

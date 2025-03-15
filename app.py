@@ -30,13 +30,16 @@ db.init_app(app)
 @app.route("/")
 #@login_required
 def serve_home():
-    if request.method == "POST": # this is going to run after making a new classroom
-        classroom = Classroom()
-        classroom.name = request.form.get("classroomName")
-        DBHandler.addClassroom(classroom)
-
-    all_classrooms = DBHandler.getAllClassrooms()
-    return render_template('Home.html', all_classrooms = all_classrooms)
+    classroom = DBHandler.get_classroom_by_teacher(t_id=1)
+    return render_template('Home.html', classroom=classroom)
+    
+    # if request.method == "POST": # this is going to run after making a new classroom
+    #     classroom = Classroom()
+    #     classroom.name = request.form.get("classroomName")
+    #     DBHandler.addClassroom(classroom)
+    #
+    # all_classrooms = DBHandler.getAllClassrooms()
+    # return render_template('Home.html', all_classrooms = all_classrooms)
 
 # API route to provide chart data
 @app.route('/chart-data')
@@ -76,7 +79,6 @@ def serve_classroom(cl_id:str):
 
         return render_template('Classroom.html', test_papers=test_papers, students=students)
 
-
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
     return render_template('StudentGraph.html')
@@ -108,7 +110,7 @@ def serve_credit():
 with app.app_context():
     db.drop_all()
     db.create_all()
-
+    
     Sankinator = Teacher(t_id=1, t_username='MrSankey')
     db.session.add(Sankinator)
 
@@ -126,7 +128,7 @@ with app.app_context():
     db.session.add(Help)
 
     class1 = Classroom(cl_id='FIT1049', t_id=1)
-    class2 = Classroom(cl_id='FIT1012', t_id=1)
+    class2 = Classroom(cl_id='ENG1012', t_id=1)
     db.session.add(class1)
     db.session.add(class2)
 
@@ -144,16 +146,23 @@ with app.app_context():
     db.session.add(cHelp)
 
     #Please replace these im very tired and cant think of good skills. like how tf u write a question about communication?
-    Creativity = Skill(sk_id=1, sk_name='Creativity', sk_desc='Lorem Ipsum')
-    Analytical = Skill(sk_id=2, sk_name='Analytical', sk_desc='Lorem Ipsum')
-    Awareness = Skill(sk_id=3, sk_name='Awareness', sk_desc='Lorem Ipsum')
-    Management = Skill(sk_id=4, sk_name='Management', sk_desc='Lorem Ipsum')
-    Communication = Skill(sk_id=5, sk_name='Communication', sk_desc='Lorem Ipsum')
-    db.session.add(Creativity)
-    db.session.add(Analytical)
-    db.session.add(Awareness)
-    db.session.add(Management)
-    db.session.add(Communication)
+    skill1 = Skill(sk_id=1, sk_name='Creativity', sk_desc='Lorem Ipsum')
+    skill2 = Skill(sk_id=2, sk_name='Logical Reasoning', sk_desc='Lorem Ipsum')
+    skill3 = Skill(sk_id=3, sk_name='Perception', sk_desc='Lorem Ipsum')
+    skill4 = Skill(sk_id=4, sk_name='Memory', sk_desc='Lorem Ipsum')
+    skill5 = Skill(sk_id=5, sk_name='Language', sk_desc='Lorem Ipsum')
+    skill6 = Skill(sk_id=6, sk_name='Adaptability', sk_desc='Lorem Ipsum')
+    skill7 = Skill(sk_id=7, sk_name='Application', sk_desc='Lorem Ipsum')
+    skill8 = Skill(sk_id=8, sk_name='Problem Solving', sk_desc='Lorem Ipsum')
+
+    db.session.add(skill1)
+    db.session.add(skill2)
+    db.session.add(skill3)
+    db.session.add(skill4)
+    db.session.add(skill5)
+    db.session.add(skill6)
+    db.session.add(skill7)
+    db.session.add(skill8)
 
     cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
     cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")

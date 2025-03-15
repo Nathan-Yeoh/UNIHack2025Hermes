@@ -465,8 +465,7 @@ pre {
     word-break: normal; }
 
 .pre-scrollable {
-  max-height: 340px;
-  overflow-y: scroll; }
+  max-height: 340px; }
 
 .container {
   width: 100%;
@@ -4521,8 +4520,7 @@ a.close.disabled {
   position: absolute;
   top: -9999px;
   width: 50px;
-  height: 50px;
-  overflow: scroll; }
+  height: 50px; }
 
 @media (min-width: 576px) {
   .modal-dialog {
@@ -10932,7 +10930,6 @@ hr {
   text-transform: uppercase; }
 
 .table-responsive {
-  overflow: scroll;
   padding-bottom: 10px; }
 
 #tables .table-responsive {
@@ -11643,9 +11640,8 @@ table.tablesorter thead tr .headerSortDown {
 .main-panel {
   position: relative;
   float: right;
-  width: 80%;
-  height: 90%;
-  min-height: 95vh;
+  width: 100%;
+  min-height: 100vh;
   background: linear-gradient(#1e1e2f, #1e1e24);
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel[data="blue"] {
@@ -12283,7 +12279,6 @@ code {
 .rtl .main-panel {
   position: fixed;
   height: 100%;
-  overflow-y: scroll;
   overflow-x: hidden; }
 
 @media screen and (max-width: 768px) {
