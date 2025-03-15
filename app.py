@@ -96,19 +96,19 @@ def serve_student_graph():
 
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper(cl_id: str, tp_id: int):
-    if request.method == "POST":
-        # get test paper from creation
-        test_name = request.form.get("tname")
-        test_file = request.form.get("tfile")
-
     students = DBHandler.getStudentsByClassroom(cl_id)
     classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
     return render_template('TestPaper.html', cl_id=cl_id, students=students, classroom_testpaper=classroom_testpaper)
 
 
-@app.route("/Classroom/TestPaper/Create")
+@app.route("/Classroom/TestPaper/Create", methods=["GET", "POST"])
 def serve_testpaper_create():
-    return render_template('TestPaperCreate.html')
+    if request.method == "POST":
+        # class and test id
+        classroom_id = request.form.get("cl_id")
+        testpaper_id = request.form.get("tp_id")
+
+    return render_template('TestPaperCreate.html', cl_id=classroom_id, tp_id=testpaper_id)
 
 
 @app.route("/Classroom/TestPaper/Edit/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
@@ -123,6 +123,7 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
     return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions)
 
+    return render_template('TestPaperEdit.html')
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
