@@ -1,6 +1,4 @@
-import random
-
-from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
+from flask import Flask, render_template, redirect, url_for, flash, request, session
 #from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from datetime import datetime, timedelta
 
@@ -112,9 +110,7 @@ with app.app_context():
     db.create_all()
 
     Sankinator = Teacher(t_id=1, t_username='MrSankey')
-    Tan = Teacher(t_id=2, t_username="MrTan")
     db.session.add(Sankinator)
-    db.session.add(Tan)
 
     Adam = Student(s_id=1, s_name='Adam')
     Wroe = Student(s_id=2, s_name='Wroe')
@@ -130,7 +126,7 @@ with app.app_context():
     db.session.add(Help)
 
     class1 = Classroom(cl_id='FIT1049', t_id=1)
-    class2 = Classroom(cl_id='FIT1012', t_id=2)
+    class2 = Classroom(cl_id='FIT1012', t_id=1)
     db.session.add(class1)
     db.session.add(class2)
 

@@ -11643,9 +11643,9 @@ table.tablesorter thead tr .headerSortDown {
 .main-panel {
   position: relative;
   float: right;
-  width: 85%;
-  min-height: 100vh;
-  border-top: 2px solid #e14eca;
+  width: 80%;
+  height: 90%;
+  min-height: 95vh;
   background: linear-gradient(#1e1e2f, #1e1e24);
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel[data="blue"] {
@@ -11655,7 +11655,7 @@ table.tablesorter thead tr .headerSortDown {
   .main-panel[data="primary"] {
     border-top: 2px solid #e14eca; }
   .main-panel > .content {
-    padding: 78px 30px 30px 280px;
+    padding: 10px 30px 30px 280px;
     min-height: calc(100vh - 70px); }
   .main-panel > .navbar {
     margin-bottom: 0; }
