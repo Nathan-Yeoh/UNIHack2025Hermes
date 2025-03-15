@@ -75,6 +75,7 @@
                       <td>
                         <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
                           <input name="s_id" type="hidden" value="{{student[0]}}">
+                          <input name="cl_id" type="hidden" value="{{cl_id}}">
                           <button type="submit"><i class="tim-icons icon-atom"></i></button>
                         </form>
                       </td>

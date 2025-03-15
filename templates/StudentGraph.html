@@ -11,7 +11,7 @@
 <div class="content">
     <br>
     <h1>{{student.s_name}} - {{classroom_id}}</h1>
-    <canvas id="radarChart" style="max-height: 600px;"></canvas>
+    <canvas id="radarChart" style="max-height: 600px;" colours="[ { fillColor: '#ffff00' }, { fillColor: '#0066ff' } ]"></canvas>
 </div>
 
 
@@ -28,20 +28,37 @@
                 data: {{studattributes | safe}}
             }, {
                 label: 'Class Average',
-                data: {{attributes | safe}}
+                data: {{attributes | safe}},
+                
             }]
         },
         options: {
+            plugins:{
+                labels:{
+                    render: 'label',
+                    color:"white"
+                }
+            },
             responsive: true,
+            legend: {
+                labels: {
+                    color: "white",
+                    size: 18
+                }
+            },
             scales: {
                 r: {
                     beginAtZero: true,
                     suggestedMax: 100,
-                    backgroundColor: Color('black')
+                    ticks:{
+                        backdropColor: 'rgb(0,0,0,0)',
+                        color:'white'
+                    }
                 }
             }
         }
     });
+
 </script>
 
 {% endblock %}
