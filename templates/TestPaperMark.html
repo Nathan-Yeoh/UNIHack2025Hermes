@@ -16,11 +16,11 @@
             <div class="card-body">
               <div class="table-responsive">
                 <form
-                        action="{{url_for('mark_testpaper', cl_id=classroom_testpaper.get_cl_id(), tp_id=classroom_testpaper.get_tp_id())}}"
+                        action="{{url_for('mark_testpaper', cl_id=classroom_testpaper.get_cl_id(), tp_id=classroom_testpaper.get_tp_id(), s_id=student.get_s_id())}}"
                         method="POST">
                   <input name="cl_id" type="hidden" value="{{classroom_testpaper.get_cl_id()}}">
                   <input name="tp_id" type="hidden" value="{{classroom_testpaper.get_tp_id()}}">
-                  <input name="tp_id" type="hidden" value="{{classroom_testpaper.get_tp_id()}}">
+                  <input name="s_id" type="hidden" value="{{student.get_s_id()}}">
                   <input name="q_length" type="hidden" value="{{questions|length}}">
 
                   <input name="q_length" type="hidden" value="{{questions|length}}">
@@ -40,6 +40,7 @@
                         <input name="marks_given{{question.get_question_no()}}" type="number"
                                min="0" max="{{question.get_question_total_mark()}}"
                                value={{question.get_question_total_mark()}}>  / {{question.get_question_total_mark()}}
+                        <input type="hidden" name="marks_avail{{question.get_question_no()}}" value="{{question.get_question_total_mark()}}">
                       </td>
                     </tr>
                     {% endfor %}

@@ -24,5 +24,5 @@ class Test_Result(db.Model):
     def get_student_mark(self):
         return self.tr_mark
 
-    def set_student_mark(self, mark: float):
+    def set_student_mark(self, mark: float = 0):
         self.tr_mark = mark
