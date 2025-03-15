@@ -203,3 +203,24 @@ class DBHandler:
         except Exception as e:
             _print(e)
             return -1
+
+    @staticmethod
+    def updateTestQuestionByTpQuestionId(tp_id: int, tp_question_no: int, tp_question_text: str, tp_question_total_mark: int):
+        """
+        Takes an input of the test paper ID and question number ID, and updates the values
+
+        :param tp_id:
+        :param tp_question_no:
+        :return:
+        """
+        try:
+            question = TestPaper.query.get((tp_id, tp_question_no))
+            question.set_question_text(tp_question_text)
+            question.set_question_total_mark(tp_question_total_mark)
+
+            db.session.commit()
+            return 0
+
+        except Exception as e:
+            _print(e)
+            return -1

@@ -19,3 +19,9 @@ class TestPaper(db.Model):
 
     def get_question_total_mark(self):
         return self.tp_question_total_mark
+
+    def set_question_text(self, new_text: str):
+        self.tp_question_text = new_text
+
+    def set_question_total_mark(self, new_mark: int):
+        self.tp_question_total_mark = new_mark

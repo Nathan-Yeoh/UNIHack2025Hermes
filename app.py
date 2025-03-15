@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 from DBHandler import DBHandler
 from Entities.Classroom import Classroom
@@ -123,6 +123,18 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
     return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions)
 
+@app.route("/Classroom/TestPaper/Save/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
+def save_testpaper(cl_id: str, tp_id: int):
+    if request.method == "POST":
+        q_length = int(request.form.get("q_length"))
+        print(q_length)
+        for i in range(1, q_length+1):
+            q_text = request.form.get(f"q_text{i}")
+            q_marks = int(request.form.get(f"q_marks{i}"))
+            print(tp_id, i, q_text, q_marks)
+            DBHandler.updateTestQuestionByTpQuestionId(tp_id, i, q_text, q_marks)
+
+    return redirect(url_for("serve_classroom", cl_id=cl_id))
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
@@ -134,7 +146,7 @@ def serve_about():
     return render_template('About.html')
 
 
-@app.route("/Credit")
+@app.route("/Credits")
 def serve_credit():
     return render_template('Credit.html')
 
