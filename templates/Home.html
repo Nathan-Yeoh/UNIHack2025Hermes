@@ -1,15 +1,9 @@
 {% extends "layouts/base.html" %}
 {% block title %} Home {% endblock %}
 {% block content %}
-<h1> Your Classrooms </h1>
+
 <body>
 
-{% for classroom in all_classrooms %}
-<form action="{{url_for('serve_classroom', cl_id=classroom.cl_id)}}" method="POST">
-  <input name="cl_id" type="hidden" value={{classroom.cl_id}}>
-  <button class="" type="submit">View</button>
-</form>
-{% endfor %}
 
 <div class="content">
     <p></p>
