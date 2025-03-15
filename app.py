@@ -105,17 +105,25 @@ def serve_testpaper(cl_id: str, tp_id: int):
 def serve_testpaper_create():
     if request.method == "POST":
         # class and test id
-        classroom_id = request.form.get("cl_id")
-        testpaper_id = request.form.get("tp_id")
+        cl_id = request.form.get("cl_id")
+        tp_id = request.form.get("tp_id")
 
-    return render_template('TestPaperCreate.html', cl_id=classroom_id, tp_id=testpaper_id)
+    return render_template('TestPaperCreate.html', cl_id=cl_id, tp_id=tp_id)
 
 
 @app.route("/Classroom/TestPaper/Edit/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper_edit(cl_id: str, tp_id: int):
     if request.method == "POST":
         cl_id = request.form.get("cl_id")
-        tp_id = request.form.get("tp_id")
+        tp_id = int(request.form.get("tp_id"))
+        tp_name = request.form.get("tp_name")
+
+        try:
+            tp_file = request.files['tp_file']
+            # input chat gpt here
+            tp_id -= 2 # remove when creating new classroom_testpaper
+        except:
+            pass
 
     classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
     # get the questions of the test as a tuple (question string, marks available)

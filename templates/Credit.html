@@ -3,8 +3,30 @@
 {% block content %}
 <div class="content">
   <p></p>
-<h1> Credits </h1>
-<h2>Our team</h2>
+  <h1>Credits</h1>
+  <!-- form inputs -->
+  <div class="row">
+      <div class="card">
+          <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+            <p>This was very fun! Check out our linked ins!</p>
+            <ol>
+              <li><a href="https://www.linkedin.com/in/nathan-yeoh-134377224/">Nathan</a></li>
+              <li><a href="https://www.linkedin.com/in/joshua-gong/">Josh</a></li>
+              <li><a href="https://www.linkedin.com/in/nicholas-lopes-last-238b83224/">Nick</a></li>
+              <li><a href="https://www.linkedin.com/in/edward-dunn-545b80224/">Edward</a></li>
+              <li><a href="https://www.linkedin.com/in/keevan-vijayanand-99a278249/">Keevan</a></li>
+            </ol> 
+            <h5 style="position: absolute; bottom: 15px; right: 15px;">*ranked in order of contribution</h5>
 
+            <button type="button" class="btn" onclick="cancel()">Return to home</button>
+          </div>
+      </div>
+  </div>
 </div>
+
+<script>
+  function cancel() {
+    location.href = "{{url_for('serve_home')}}"
+  }
+</script>
 {% endblock %}

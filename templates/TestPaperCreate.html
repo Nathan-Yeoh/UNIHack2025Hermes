@@ -1,59 +1,40 @@
 {% extends "layouts/base.html" %}
 {% block content %}
-<body>
-    <div class="content">
-        <p></p>
-        <h1>New Test</h1>
+<div class="content">
+    <p></p>
+    <h1>New Test</h1>
 
-        <!-- form inputs -->
-        <div class="row">
-            <div class="card">
-                <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
-                    <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=tp_id)}}">
-                        <!-- name input -->
-                        <label for="tname">Test paper name:</label><br>
-                        <input type="text" id="tname" name="tname" required><br>
+    <!-- form inputs -->
+    <div class="row">
+        <div class="card">
+            <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+                <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=tp_id)}}" enctype="multipart/form-data" method="post">
+                    <!-- name input -->
+                    <label for="tp_name">Test paper name:</label><br>
+                    <input type="text" id="tp_name" name="tp_name" required><br>
 
-                        <!-- file input -->
-                        <label for="tfile" style="position: relative; top: 10px">Select a file:</label><br>
-                        <input type="file" class="btn" id="tfile" name="tfile" required><br>
+                    <!-- file input -->
+                    <label for="tp_file" style="position: relative; top: 10px">Select a file:</label><br>
+                    <input type="file" class="btn" id="tp_file" name="tp_file" required><br>
+                    <br>
 
-                        <!-- generate button -->
-                        <input type="submit" class="btn" value="Generate">
+                    <!-- generate button -->
+                    <input type="submit" class="btn" value="Generate">
+                    <!-- cancel button -->
+                    <button type="button" class="btn" onclick="cancel()">Cancel</button>
 
-                        <!-- hidden inputs -->
-                        <!-- <input type="hidden" id="cl_id" value="{{cl_id}}">
-                        <input type="hidden" id="tp_id" value={{tp_id}}> -->
-                    </form>
-                </div>
+                    <!-- hidden inputs -->
+                    <input type="hidden" id="cl_id" name="cl_id" value="{{cl_id}}">
+                    <input type="hidden" id="tp_id" name="tp_id" value="{{tp_id}}">
+                </form>
             </div>
         </div>
     </div>
-</body>
-
-<!-- style="height: calc(95vh - 90px)" -->
-<!-- style="position: absolute; bottom: 15px;" -->
-<!-- table question outputs -->
-<!-- <div class="row">
-<div class="card" style="margin-bottom: 0px;">
-    <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
-        <button type="button" onclick="publish()" class="btn">Publish</button>
-    </div>
-</div>
 </div>
 
 <script>
-    function generate_file() {
-        var test_url = "{{url_for('generate_file')}}"
-
-        var test_name = document.getElementById("tname").nodeValue
-        var test_file = document.getElementById("tfile").nodeValue
-        alert(test_file)
-        
+    function cancel() {
+      location.href = "{{url_for('serve_classroom', cl_id=cl_id)}}"
     }
-
-    function publish() {
-        location.href = "{{url_for('serve_home')}}"
-    }
-</script> -->
+</script>
 {% endblock %}

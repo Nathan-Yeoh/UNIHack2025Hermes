@@ -2,7 +2,27 @@
 {% block title %} About Us {% endblock %}
 {% block content %}
 <div class="content">
-  <h1> About Us </h1>
+  <p></p>
+  <h1>About Us</h1>
+  <!-- form inputs -->
+  <div class="row">
+      <div class="card">
+          <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+            <p>FLINT N STEEL</p>
+            <p>I AM STEVE</p>
+            <p>WATER RELEASE</p>
+            <p>THE NETHER</p>
+            <p>CHICKEN JOCKEY</p>
 
+            <button type="button" class="btn" onclick="cancel()">Return to home</button>
+          </div>
+      </div>
+  </div>
 </div>
+
+<script>
+  function cancel() {
+    location.href = "{{url_for('serve_home')}}"
+  }
+</script>
 {% endblock %}
