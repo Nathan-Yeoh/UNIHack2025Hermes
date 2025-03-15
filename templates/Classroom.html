@@ -2,9 +2,9 @@
 {% block title %} Classroom {% endblock %}
 {% block content %}
 
-<p></p>>
-<div style="margin-left: 15%;">
-<h1>Classroom - {{classroomId}}</h1>
+<p></p>
+<div class="content">
+<h1>Classroom - {{classroom_id}}</h1>
 
 <div class="flex-container" >
   <h2>Test Papers</h2>
@@ -14,7 +14,6 @@
       <div class="col-md-12">
         <div class="card ">
           <div class="card-header">
-            <h4 class="card-title"> Simple Table</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -28,9 +27,21 @@
                 </thead>
                 {% for test_paper in test_papers %}
                 <tr>
-                  <td>{{test_paper.tp_id}}</td>
-                  <td>hello</td>
-                  <td>hello</td>
+                  <td>{{test_paper.get_cltp_name()}}</td>
+                  <td>
+                    <form action="{{url_for('serve_testpaper_edit', cl_id=classroom_id, tp_id=test_paper.get_tp_id())}}" method="POST">
+                      <input name="cl_id" type="hidden" value="{{classroom_id}}">
+                      <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
+                      <button type="submit"><i class="tim-icons icon-pencil"></i></button>
+                    </form>
+                  </td>
+                  <td>
+                    <form action="{{url_for('serve_testpaper', cl_id=classroom_id, tp_id=test_paper.get_tp_id())}}" method="POST">
+                      <input name="cl_id" type="hidden" value="{{classroom_id}}">
+                      <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
+                      <button type="submit"><i class="tim-icons icon-check-2"></i></button>
+                    </form>
+                  </td>
                 </tr>
                 {% endfor %}
               </table>
@@ -48,7 +59,6 @@
       <div class="col-md-12">
         <div class="card ">
           <div class="card-header">
-            <h4 class="card-title"> Simple Table</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -63,9 +73,9 @@
                 <tr>
                   <td>{{student[1]}}</td>
                   <td>
-                    <form action="{{url_for('serve_student_graph', s_id = student[0])}}" method="POST">
+                    <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
                       <input name="s_id" type="hidden" value="{{student[0]}}">
-                      <button type="submit" value="Submit">View</button>
+                      <button type="submit"><i class="tim-icons icon-atom"></i></button>
                     </form>
                   </td>
                 </tr>

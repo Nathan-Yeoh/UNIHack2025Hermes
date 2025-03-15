@@ -67,17 +67,19 @@ def chart_data():
     return jsonify(data)
 
 @app.route("/Classroom/<string:cl_id>", methods=["GET", "POST"])
-def serve_classroom(cl_id:str):
+def serve_classroom(cl_id: str):
+
     if request.method == "POST":
         # get all test papers from this classroom
         cl_id = request.form.get("cl_id")
-        test_papers = DBHandler.getTestPapersByClassroom(cl_id)
-        print(test_papers)
-        # get all students in this classroom
-        students = DBHandler.getStudentsByClassroom(cl_id)
-        print(students)
+    test_papers = DBHandler.getTestPapersByClassroom(cl_id)
+    print("===test_papers===")
+    print(test_papers)
+    # get all students in this classroom
+    students = DBHandler.getStudentsByClassroom(cl_id)
 
-        return render_template('Classroom.html', test_papers=test_papers, students=students)
+
+    return render_template('Classroom.html', classroom_id = cl_id, test_papers=test_papers, students=students)
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
@@ -88,20 +90,23 @@ def serve_student_graph():
     student = DBHandler.getStudentFromId(s_id=s_id)
     return render_template('StudentGraph.html', skillnames=skillnames, student=student)
 
-@app.route("/Classroom/TestPaper", methods=["GET", "POST"])
-def serve_testpaper():
-    return render_template('TestPaper.html')
+@app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
+def serve_testpaper(cl_id: str, tp_id: int):
+    students = DBHandler.getStudentsByClassroom(cl_id)
+    classroom_testpaper = DBHandler.getTestPaperByClassTpId(cl_id, tp_id)
+    return render_template('TestPaper.html', students=students, test_paper=classroom_testpaper)
 
 @app.route("/Classroom/TestPaper/Create")
 def serve_testpaper_create():
     return render_template('TestPaperCreate.html')
 
-@app.route("/Classroom/TestPaper/Edit")
-def serve_testpaper_edit():
+@app.route("/Classroom/TestPaper/Edit/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
+def serve_testpaper_edit(cl_id: str, tp_id: int):
+
     return render_template('TestPaperEdit.html')
 
-@app.route("/Classroom/TestPaper/Mark", methods=["GET", "POST"])
-def serve_testpaper_mark():
+@app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
+def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
     return render_template('TestPaperMark.html')
 
 @app.route("/About")
@@ -140,9 +145,9 @@ with app.app_context():
     cAdam =  Student_Classroom(cl_id='FIT1049', s_id=1)
     cWroe =  Student_Classroom(cl_id='FIT1049', s_id=2)
     cSmart = Student_Classroom(cl_id='FIT1049', s_id=3)
-    cPant =  Student_Classroom(cl_id='FIT1012', s_id=4)
-    cKoolaid = Student_Classroom(cl_id='FIT1012', s_id=5)
-    cHelp =  Student_Classroom(cl_id='FIT1012', s_id=6)
+    cPant =  Student_Classroom(cl_id='ENG1012', s_id=4)
+    cKoolaid = Student_Classroom(cl_id='ENG1012', s_id=5)
+    cHelp =  Student_Classroom(cl_id='ENG1012', s_id=6)
     db.session.add(cAdam)
     db.session.add(cWroe)
     db.session.add(cSmart)
@@ -171,8 +176,8 @@ with app.app_context():
 
     cTest1 = Classroom_TestPaper(cl_id="FIT1049", tp_id=1, cltp_name="Midsem test")
     cTest2 = Classroom_TestPaper(cl_id="FIT1049", tp_id=2, cltp_name="Final test")
-    cTest3 = Classroom_TestPaper(cl_id="FIT1012", tp_id=1, cltp_name="Midsem 1012 test")
-    cTest4 = Classroom_TestPaper(cl_id="FIT1012", tp_id=2, cltp_name="Final 1012 test")
+    cTest3 = Classroom_TestPaper(cl_id="ENG1012", tp_id=1, cltp_name="Midsem 1012 test")
+    cTest4 = Classroom_TestPaper(cl_id="ENG1012", tp_id=2, cltp_name="Final 1012 test")
     db.session.add(cTest1)
     db.session.add(cTest2)
     db.session.add(cTest3)

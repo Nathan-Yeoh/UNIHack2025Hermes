@@ -70,18 +70,19 @@ class DBHandler:
     @staticmethod
     def getTestPapersByClassroom(cl_id: str) -> list[TestPaper]:
         """
-        Returns a list of TestPaper objects given the classroom ID as a string
+        Returns a list of tuples formatted as (test paper ID, test paper name, TestPaper objects) given the classroom ID as a string
         :param cl_id:
         :return:
         """
         try:
             return Classroom_TestPaper.query.filter_by(cl_id=cl_id).all()
+
         except Exception as e:
             _print(e)
             return -1
 
     @staticmethod
-    def getStudentsByClassroom(cl_id: str) -> list[int, str]:
+    def getStudentsByClassroom(cl_id: str) -> list[tuple[int, str]]:
         """
         Returns the list of student IDs as a list of integers
 
@@ -92,7 +93,6 @@ class DBHandler:
             students = []
             records = Student_Classroom.query.join(Student, Student_Classroom.s_id == Student.s_id).filter(Student_Classroom.cl_id ==
                                                                                                           cl_id).all()
-            print("here")
             for record in records:
                 print(record.student.s_id, record.student.s_name)
                 students.append((record.student.s_id, record.student.s_name))
@@ -147,3 +147,19 @@ class DBHandler:
 
 
 
+    # === TEST PAPER METHODS === #
+    @staticmethod
+    def getTestPaperByClassTpId(cl_id: str, tp_id: int):
+        """
+        Returns a Classroom_TestPaper object from an input of classroom ID and test paper ID
+
+        :param cl_id:
+        :param tp_id:
+        :return:
+        """
+        try:
+            print(Classroom_TestPaper.query.get((cl_id, tp_id)))
+            return Classroom_TestPaper.query.get((cl_id, tp_id))
+        except Exception as e:
+            _print(e)
+            return -1
