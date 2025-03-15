@@ -1,4 +1,49 @@
 {% extends "layouts/base.html" %}
 {% block content %}
+<head>
+  {% block title %}Classrooms{% endblock %}
+</head>
+<h1>Classroom - {{classroomId}}</h1>
 
+<div class="flex-container">
+  <h2>Test Papers</h2>
+  {{testPapers}}
+  {{students}}
+<table>
+  <tr>
+    <th>Test Name</th>
+    <th>Edit Test</th>
+    <th>Mark Test</th>
+  </tr>
+  {% for testPaper in testPapers %}
+  <tr>
+    <td>{{testPaper.tp_id}}</td>
+    <td></td>
+    <td></td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+<div class="flex-container">
+<h2>Students</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>View</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td>{{student.s_name}}</td>
+      <td>
+        <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
+          <input name="s_id" type="hidden" value="{{student.id}}">
+          <button class="" type="submit">View</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{{ classrooms }}
 {% endblock %}

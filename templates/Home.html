@@ -1,4 +1,15 @@
 {% extends "layouts/base.html" %}
 {% block content %}
+<h1> Your Classrooms </h1>
+<head>
+  <title>Home</title>
+</head>
+<body>
+
+<form action="{{url_for('serve_classroom', cl_id=FIT1049)}}" method="POST">
+  <input name="cl_id" type="hidden" value="FIT1049"> <!--FIXME -->
+  <button class="" type="submit">View</button>
+</form>
+</body>
 
 {% endblock %}

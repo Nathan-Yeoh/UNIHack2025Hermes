@@ -1,4 +1,27 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 
+<script>
+  var data_js = {{ data|tojson }};
+  import Chart from 'chart.js/auto'
+
+(async function() {
+new Chart(
+  {
+    type: 'radar',
+    data: {
+      labels: data.map(row => row.year),
+      datasets: [
+        {
+          label: 'Acquisitions by year',
+          data: data.map(row => row.count)
+        }
+      ]
+    }
+  }
+})();
+
+  });
+</script>
+
 {% endblock %}

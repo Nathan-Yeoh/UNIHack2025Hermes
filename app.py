@@ -1,4 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, session
+import random
+
+from bokeh.embed import components
+from bokeh.plotting import figure
+from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
 #from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from datetime import datetime, timedelta
 
@@ -30,15 +34,56 @@ db.init_app(app)
 @app.route("/")
 #@login_required
 def serve_home():
-    return render_template('Home.html')
+    if request.method == "POST": # this is going to run after making a new classroom
+        classroom = Classroom()
+        classroom.name = request.form.get("classroomName")
+        DBHandler.addClassroom(classroom)
 
-@app.route("/Classroom", methods=["GET", "POST"])
-def serve_classroom():
-    return render_template('Classroom.html')
+    all_classrooms = DBHandler.getAllClassrooms()
+    return render_template('Home.html', allClassrooms = all_classrooms)
+
+# API route to provide chart data
+@app.route('/chart-data')
+def chart_data():
+    student = DBHandler.getStudentFromId(s_id=s_id)
+    data = {
+        "labels": ["Speed", "Strength", "Agility", "Endurance", "Flexibility"],
+        "datasets": [
+            {
+                "label": "Athlete A",
+                "data": [80, 90, 75, 85, 70],
+                "backgroundColor": "rgba(54, 162, 235, 0.2)",
+                "borderColor": "rgba(54, 162, 235, 1)",
+                "borderWidth": 2
+            },
+            {
+                "label": "Athlete B",
+                "data": [60, 85, 95, 70, 80],
+                "backgroundColor": "rgba(255, 99, 132, 0.2)",
+                "borderColor": "rgba(255, 99, 132, 1)",
+                "borderWidth": 2
+            }
+        ]
+    }
+    return jsonify(data)
+
+@app.route("/Classroom/<string:cl_id>", methods=["GET", "POST"])
+def serve_classroom(cl_id:str):
+    if request.method == "POST":
+        # get all test papers from this classroom
+        cl_id = request.form.get("cl_id")
+        test_papers = DBHandler.getTestPapersByClassroom(cl_id)
+
+        # get all students in this classroom
+        students = DBHandler.getStudentsByClassroom(cl_id)
+        print(students)
+
+        return render_template('Classroom.html', testPapers=test_papers, students=students)
+
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
-    return render_template('StudentGraph.html')
+    return render_template('index.html')
 
 @app.route("/Classroom/TestPaper", methods=["GET", "POST"])
 def serve_testpaper():
@@ -67,7 +112,7 @@ def serve_credit():
 with app.app_context():
     db.drop_all()
     db.create_all()
-    
+
     Sankinator = Teacher(t_id=1, t_username='MrSankey')
     Tan = Teacher(t_id=2, t_username="MrTan")
     db.session.add(Sankinator)
