@@ -176,8 +176,7 @@ class DBHandler:
         try:
             return Test_Result.query.get((cl_id, tp_id, tp_question_no, s_id))
         except Exception as e:
-            _print(e)
-            return -1
+            return 0
 
     # === TEST PAPER METHODS === #
     @staticmethod
@@ -235,6 +234,11 @@ class DBHandler:
     @staticmethod
     def set_student_mark(cl_id: str, tp_id: int, tp_question_no:int, s_id:int, norm_mark:float = 0):
         test_result = DBHandler.getTestResult(cl_id, tp_id, tp_question_no, s_id)
+
+        if test_result == 0 or test_result is None:
+            test_result = Test_Result(cl_id=cl_id, tp_id=tp_id, tp_question_no=tp_question_no, s_id=s_id)
+            db.session.add(test_result)
+
         test_result.set_student_mark(norm_mark)
 
         db.session.commit()
