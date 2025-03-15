@@ -33,7 +33,8 @@
                       <td>{{question.get_question_no()}}</td>
                       <td><input name="q_text{{question.get_question_no()}}" style="width: 100%" type="text"
                                  value="{{question.get_question_text()}}"></td>
-                      <td><input name="q_marks{{question.get_question_no()}}" type="number" value={{question.get_question_total_mark()}}>
+                      <td><input name="q_marks{{question.get_question_no()}}" type="number" min="0"
+                                 value={{question.get_question_total_mark()}}>
                       </td>
                     </tr>
                     {% endfor %}

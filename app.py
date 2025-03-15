@@ -139,8 +139,30 @@ def save_testpaper(cl_id: str, tp_id: int):
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
-    return render_template('TestPaperMark.html')
+    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    questions = DBHandler.getTestQuestionsByTpId(tp_id)
+    student = DBHandler.getStudentFromId(s_id)
 
+    print(classroom_testpaper)
+    print(questions)
+    print(student)
+    return render_template('TestPaperMark.html', classroom_testpaper=classroom_testpaper, questions=questions, student=student)
+
+
+@app.route("/Classroom/TestPaper/Mark", methods=["GET", "POST"])
+def mark_testpaper():
+    if request.method == "POST":
+        cl_id = request.form.get("cl_id")
+        tp_id = int(request.form.get("tp_id"))
+        s_id = int(request.form.get("s_id"))
+        q_length = int(request.form.get("q_length"))
+
+        for i in range(1, q_length+1):
+            norm_mark = int(request.form.get(f"marks_given{i}")) / int(request.form.get(f"marks_avail{i}"))
+            print(norm_mark)
+            DBHandler.set_student_mark(cl_id, tp_id,i, s_id, norm_mark)
+
+        return redirect(url_for("serve_classroom", cl_id=cl_id))
 
 @app.route("/About")
 def serve_about():
