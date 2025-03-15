@@ -30,8 +30,8 @@ db.init_app(app)
 @app.route("/")
 #@login_required
 def serve_home():
-
-    return render_template('Home.html')
+    classroom = DBHandler.get_classroom_by_teacher(t_id=1)
+    return render_template('Home.html', classroom=classroom)
     
 
 @app.route("/Classroom", methods=["GET", "POST"])
@@ -87,7 +87,7 @@ with app.app_context():
     db.session.add(Help)
 
     class1 = Classroom(cl_id='FIT1049', t_id=1)
-    class2 = Classroom(cl_id='FIT1012', t_id=1)
+    class2 = Classroom(cl_id='ENG1012', t_id=1)
     db.session.add(class1)
     db.session.add(class2)
 
@@ -105,16 +105,23 @@ with app.app_context():
     db.session.add(cHelp)
 
     #Please replace these im very tired and cant think of good skills. like how tf u write a question about communication?
-    Creativity = Skill(sk_id=1, sk_name='Creativity', sk_desc='Lorem Ipsum')
-    Analytical = Skill(sk_id=2, sk_name='Analytical', sk_desc='Lorem Ipsum')
-    Awareness = Skill(sk_id=3, sk_name='Awareness', sk_desc='Lorem Ipsum')
-    Management = Skill(sk_id=4, sk_name='Management', sk_desc='Lorem Ipsum')
-    Communication = Skill(sk_id=5, sk_name='Communication', sk_desc='Lorem Ipsum')
-    db.session.add(Creativity)
-    db.session.add(Analytical)
-    db.session.add(Awareness)
-    db.session.add(Management)
-    db.session.add(Communication)
+    skill1 = Skill(sk_id=1, sk_name='Creativity', sk_desc='Lorem Ipsum')
+    skill2 = Skill(sk_id=2, sk_name='Logical Reasoning', sk_desc='Lorem Ipsum')
+    skill3 = Skill(sk_id=3, sk_name='Perception', sk_desc='Lorem Ipsum')
+    skill4 = Skill(sk_id=4, sk_name='Memory', sk_desc='Lorem Ipsum')
+    skill5 = Skill(sk_id=5, sk_name='Language', sk_desc='Lorem Ipsum')
+    skill6 = Skill(sk_id=6, sk_name='Adaptability', sk_desc='Lorem Ipsum')
+    skill7 = Skill(sk_id=7, sk_name='Application', sk_desc='Lorem Ipsum')
+    skill8 = Skill(sk_id=8, sk_name='Problem Solving', sk_desc='Lorem Ipsum')
+
+    db.session.add(skill1)
+    db.session.add(skill2)
+    db.session.add(skill3)
+    db.session.add(skill4)
+    db.session.add(skill5)
+    db.session.add(skill6)
+    db.session.add(skill7)
+    db.session.add(skill8)
 
     db.session.commit() #Note: Teacher, Student, Skills, Classroom, and Student_Classroom data creation is assumed out of scope!
 
