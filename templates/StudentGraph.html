@@ -11,7 +11,7 @@
 <div class="content">
     <br>
     <h1>{{student.s_name}}</h1>
-    <canvas id="radarChart" style="max-height: 800px;"></canvas>
+    <canvas id="radarChart" style="max-height: 600px;"></canvas>
 </div>
 
 
@@ -24,7 +24,11 @@
         data: {
             labels: {{skillnames | safe}},
             datasets: [{
-                data: [20, 50, 60, 100, 70, 40, 10, 100]
+                label: '{{student.s_name | safe}}',
+                data: {{studattributes | safe}}
+            }, {
+                label: 'Class Average',
+                data: {{attributes | safe}}
             }]
         },
         options: {
