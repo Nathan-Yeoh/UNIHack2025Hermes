@@ -1,7 +1,5 @@
 import random
 
-from bokeh.embed import components
-from bokeh.plotting import figure
 from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
 #from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from datetime import datetime, timedelta
