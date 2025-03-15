@@ -44,6 +44,11 @@ def serve_student_graph():
 
 @app.route("/Classroom/TestPaper", methods=["GET", "POST"])
 def serve_testpaper():
+    if request.method == "POST":
+        # get test paper from creation
+        test_name = request.form.get("tname")
+        test_file = request.form.get("tfile")
+
     return render_template('TestPaper.html')
 
 @app.route("/Classroom/TestPaper/Create")
