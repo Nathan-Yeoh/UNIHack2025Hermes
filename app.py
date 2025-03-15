@@ -30,7 +30,9 @@ db.init_app(app)
 @app.route("/")
 #@login_required
 def serve_home():
+
     return render_template('Home.html')
+    
 
 @app.route("/Classroom", methods=["GET", "POST"])
 def serve_classroom():
