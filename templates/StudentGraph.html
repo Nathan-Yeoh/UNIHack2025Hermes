@@ -6,10 +6,41 @@
     <title>Radar Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
+
 <body>
-    <h2>Radar Chart</h2>
-    <canvas id="radarChart"></canvas>
-    <script src="{{ url_for('static', filename='test-chart.js') }}"></script>
+    <div class="content">
+        <br>
+        <h1>{{student.s_name}}</h1>
+        <canvas id="radarChart" style="max-height: 800px;"></canvas>
+    </div>
+
+
+
+
+    <script>
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: {{skillnames | safe}},
+                datasets: [{
+                    data: [20, 50, 60, 100, 70, 40, 10, 100]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    </script>
+    
 </body>
+
 
 {% endblock %}

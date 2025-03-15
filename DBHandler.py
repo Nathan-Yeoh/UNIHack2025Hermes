@@ -119,9 +119,31 @@ class DBHandler:
             return -1
 
 
-
+    @staticmethod
     def get_classroom_by_teacher(t_id):
         query = Classroom.query.filter_by(t_id=t_id)
         return query
+
+    # === SKILL METHODS === #
+    @staticmethod
+    def get_all_skill_names():
+        return [x[0] for x in db.session.query(Skill.sk_name).all()]
+    
+    # === TEST_RESULT METHODS === #
+    
+    @staticmethod
+    def get_attribute_value_list_by_s_id(s_id):
+        records = Test_Result.query.filter(Test_Result.s_id==s_id).join(
+            TestPaper, TestPaper.tp_id == Test_Result.tp_id, TestPaper.tp_question_no == Test_Result.tp_question_no).join(
+                Skill_TestPaper, TestPaper.tp_question_no == Skill_TestPaper.tp_question_no, TestPaper.tp_id == Skill_TestPaper.tp_id).query(
+                    Test_Result.s_id, TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, TestPaper.tp_question_total_mark, Test_Result.tr_mark).all()
+        
+        skills = Skill.query.all()
+        attributes = []
+
+        for skill in skills:
+            attributes.append
+        
+
 
 

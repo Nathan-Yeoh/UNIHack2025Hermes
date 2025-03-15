@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, url_for, flash, request, ses
 from datetime import datetime, timedelta
 
 from db import db
-from Entities.DBHandler import DBHandler
+from DBHandler import DBHandler
 from Entities.Teacher import Teacher
 from Entities.Classroom import Classroom
 from Entities.Student_Classroom import Student_Classroom
@@ -81,7 +81,12 @@ def serve_classroom(cl_id:str):
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
 def serve_student_graph():
-    return render_template('StudentGraph.html')
+    if request.method == "POST":
+        s_id = request.form.get("s_id")
+        print(s_id)
+    skillnames = DBHandler.get_all_skill_names()
+    student = DBHandler.getStudentFromId(s_id=s_id)
+    return render_template('StudentGraph.html', skillnames=skillnames, student=student)
 
 @app.route("/Classroom/TestPaper", methods=["GET", "POST"])
 def serve_testpaper():
