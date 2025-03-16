@@ -64,9 +64,9 @@ class OpenaiHandler:
         data = DBHandler.get_file(filename)
         pdf_text = OpenaiHandler.extract_text_from_pdf(data)
         output = OpenaiHandler.qa_chain.run(test_paper=pdf_text, skill_list=skills)
+        print("=======")
         print(output)
         formatted = OpenaiHandler.output_to_list(output)
-        print(f"======={cl_id, tp_id, cltp_name}")
         DBHandler.add_to_classroom_testpaper(cl_id, tp_id, cltp_name)
         
         for question in formatted:
@@ -96,9 +96,3 @@ class OpenaiHandler:
             output.append(temp)
 
         return output
-        
-        
-
-        
-
-
