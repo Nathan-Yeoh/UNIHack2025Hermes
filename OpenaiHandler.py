@@ -46,9 +46,9 @@ class OpenaiHandler:
         2.If you have a pencil, a book, and a rubber, which one would you use to write? (3 marks)
         3.What is your favorite color? Can you think of 3 things that are that color? (4 marks)
         output:
-        [1# What are the four seasons of the year?# [Memory$ Perception$ Application]# 3]ඞ
-        [2# If you have a pencil, a book, and a rubber, which one would you use to write?# [Problem Solving$ Language$ Logical Reasoning]# 3]ඞ
-        [3# What is your favorite color? Can you think of 3 things that are that color?# [Creativity$ Application$ Memory]# 3]ඞ
+        1# What are the four seasons of the year?# Memory$ Perception$ Application# 3ඞ
+        2# If you have a pencil, a book, and a rubber, which one would you use to write?# Problem Solving$ Language$ Logical Reasoning# 3ඞ
+        3# What is your favorite color? Can you think of 3 things that are that color?# Creativity$ Application$ Memory# 3ඞ
     """
 
     prompt = PromptTemplate(input_variables=['test_paper', 'skill_list'], template=template)
@@ -90,8 +90,8 @@ class OpenaiHandler:
         outerlist = txt.strip("ඞ").split("ඞ")
         output = []
         for i in outerlist:
-            init = i.strip("[]\n").split("#")
-            temp = [int(init[0]), init[1].strip(" "), [x.strip(" ") for x in init[2].strip("[] ").split("$")], int(init[3])]
+            init = i.strip("\n").split("#")
+            temp = [int(init[0]), init[1].strip(" "), [x.strip(" ") for x in init[2].strip(" ").split("$")], int(init[3])]
             output.append(temp)
 
         return output
