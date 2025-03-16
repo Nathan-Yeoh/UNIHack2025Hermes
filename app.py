@@ -103,11 +103,12 @@ def serve_testpaper(cl_id: str, tp_id: int):
 
 
 @app.route("/Classroom/TestPaper/Create", methods=["GET", "POST"])
-def serve_testpaper_create():
+def serve_testpaper_create(cl_id = None, tp_id=None):
     if request.method == "POST":
         # class and test id
         cl_id = request.form.get("cl_id")
         tp_id = request.form.get("tp_id")
+
 
     return render_template('TestPaperCreate.html', cl_id=cl_id, tp_id=tp_id)
 
@@ -124,9 +125,8 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
             DBHandler.upload_file(tp_file.filename, tp_file.read())
             OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         except:
-            print("Error in inserting PDF into database")
-
-    print(cl_id, tp_id)
+            pass
+        
     classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
     # get the questions of the test as a tuple (question string, marks available)
     questions = DBHandler.get_testquestions_by_tp_id(tp_id)

@@ -2,9 +2,9 @@ import openai
 import langchain
 import PyPDF2
 
-from langchain.chains import LLMChain
+from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import PromptTemplate
-from langchain_community.llms import OpenAI
+from langchain_openai import OpenAI
 
 from DBHandler import DBHandler
 from Entities.Classroom import Classroom
@@ -22,7 +22,7 @@ from Entities.Test_Result import Test_Result
 
 class OpenaiHandler:
 
-    openai_api_key = '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'
+    openai_api_key = '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'
 
     template = """
         test paper: {test_paper}
@@ -55,15 +55,16 @@ class OpenaiHandler:
 
     llm = OpenAI(api_key=openai_api_key)
 
-    qa_chain = LLMChain(llm=llm, prompt=prompt)
+    qa_chain = prompt | llm | StrOutputParser()
     
     @staticmethod
     def insert_pdf_into_database(filename: str, tp_id: int, cl_id: str, cltp_name: str):
         skills = " ".join(DBHandler.get_all_skill_names())
         data = DBHandler.get_file(filename)
         pdf_text = OpenaiHandler.extract_text_from_pdf(data)
-        output = OpenaiHandler.qa_chain.run(test_paper=pdf_text, skill_list=skills)
+        output = OpenaiHandler.qa_chain.invoke({'test_paper':pdf_text,'skill_list':skills})
         print(output)
+
         formatted = OpenaiHandler.output_to_list(output)
         DBHandler.add_to_classroom_testpaper(cl_id, tp_id, cltp_name)
         
