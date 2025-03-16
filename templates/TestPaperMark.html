@@ -46,10 +46,10 @@
                     {% endfor %}
                   </table>
                   <!--                    Mark button-->
-                  <button type="submit">Mark</button>
+                  <button type="submit" class="btn">Mark</button>
 
                   <!--                  Cancel button-->
-                  <a href="{{url_for('serve_classroom', cl_id=classroom_testpaper.get_cl_id())}}">Cancel</a>
+                  <button type="button" class="btn" onclick="cancel()">Cancel</button>
                 </form>
               </div>
             </div>
@@ -60,4 +60,10 @@
   </div>
 
 </div>
+
+<script>
+  function cancel() {
+    location.href = "{{url_for('serve_classroom', cl_id=classroom_testpaper.get_cl_id())}}"
+  }
+</script>
 {% endblock %}
