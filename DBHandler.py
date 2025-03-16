@@ -181,8 +181,10 @@ class DBHandler:
                         Skill_TestPaper.tp_id, Skill_TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
         
         # question query
+        print("-"*64)
+        print(tp_id)
         question_count = len(DBHandler.get_testquestions_by_tp_id(tp_id))
-        print(tp_id, question_count)
+        print(question_count)
 
         question_attributes = []
         for question_no in range(1, question_count + 1):
@@ -228,6 +230,9 @@ class DBHandler:
             _print(e)
             return -1
 
+    @staticmethod
+    def get_all_tp():
+        return TestPaper.query.all()
 
     @staticmethod
     def get_testquestions_by_tp_id(tp_id: int) -> list[tuple[str, int]]:

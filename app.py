@@ -80,7 +80,7 @@ def serve_classroom(cl_id: str):
     # get all students in this classroom
     students = DBHandler.get_students_by_classroom(cl_id)
 
-    return render_template('Classroom.html', cl_id=cl_id, test_papers=test_papers, students=students)
+    return render_template('Classroom.html', cl_id=cl_id, test_papers=test_papers, students=students, all_testpapers=DBHandler.get_all_tp())
 
 
 @app.route("/Classroom/Student", methods=["GET", "POST"])
@@ -122,11 +122,10 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
         try:
             tp_file = request.files['tp_file']
-            
+            DBHandler.upload_file(tp_file.filename, tp_file.read())
+            OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         except:
             pass
-        DBHandler.upload_file(tp_file.filename, tp_file.read())
-        OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         
     classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
 

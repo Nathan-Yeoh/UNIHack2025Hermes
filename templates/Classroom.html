@@ -46,7 +46,7 @@
                       <td>
                         <form action="{{url_for('serve_testpaper_create')}}" method="POST">
                           <input name="cl_id" type="hidden" value="{{cl_id}}">
-                          <input name="tp_id" type="hidden" value="{% if test_papers|length > 0 %}{{test_papers[-1].tp_id + 1}}{%else%}{{1}}{%endif%}">
+                          <input name="tp_id" type="hidden" value="{% if all_testpapers|length > 0 %}{{all_testpapers[-1].tp_id + 1}}{%else%}{{1}}{%endif%}">
                           <input type="submit" value="Upload/Create Test Paper" class="btn">
                         </form>
                     </td>
