@@ -1,3 +1,5 @@
+import os
+
 import openai
 import langchain
 import PyPDF2
@@ -22,7 +24,7 @@ from Entities.Test_Result import Test_Result
 
 class OpenaiHandler:
 
-    openai_api_key = 'SECRET-KEY'
+    openai_api_key = os.environ.get('SECRET-KEY')
 
     template = """
         test paper: {test_paper}
