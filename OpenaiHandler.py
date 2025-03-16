@@ -22,7 +22,7 @@ from Entities.Test_Result import Test_Result
 
 class OpenaiHandler:
 
-    openai_api_key = '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'
+    openai_api_key = 'SECRET-KEY'
 
     template = """
         test paper: {test_paper}
