@@ -16,12 +16,13 @@
             <input name="q_length" type="hidden" value="{{questions|length}}">
             
             <!-- table -->
-            <table class="table tablesorter " id="">
+            <table class="table tablesorter " style="width: 100%;">
               <thead class=" text-primary">
               <tr>
-                <th>Question #</th>
-                <th>Question Text</th>
-                <th>Marks</th>
+                <th style="width: 10%;">Question #</th>
+                <th style="width: 55%;">Question Text</th>
+                <th style="width: 10%;">Marks</th>
+                <th style="width: 25%;">Attributes</th>
               </tr>
               </thead>
               {% for question in questions %}
@@ -32,6 +33,7 @@
                 <td><input name="q_marks{{question.get_question_no()}}" style="background-color : #eadcfef5;" type="number"
                            value={{question.get_question_total_mark()}}>
                 </td>
+                <td>{{attributes.pop()}}</td>
               </tr>
               {% endfor %}
             </table>

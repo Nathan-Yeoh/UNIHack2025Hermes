@@ -173,24 +173,31 @@ class DBHandler:
     
     @staticmethod
     def get_attribute_per_question(tp_id):
-        records = db.session.query(TestPaper, Skill_TestPaper, Skill).filter(
-                        TestPaper, (TestPaper.tp_id == tp_id) & (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no)).join(
+        # skills for all questions
+        query_skills = db.session.query(TestPaper, Skill_TestPaper, Skill).filter(
+                        (TestPaper.tp_id == tp_id)).join(
                         Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).join(
                         Skill, (Skill_TestPaper.sk_id == Skill.sk_id)).with_entities(
                         TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
-
-        attributes = []
         
-        print(records)
+        # question query
+        query_questions = db.session.query(TestPaper).filter(TestPaper.tp_id == tp_id).with_entities(TestPaper.tp_question_no)
+        records_questions = query_questions.all()
 
-        # for question in records:
+        question_attributes = []
+        for question_no in records_questions:
+            records_skills = query_skills.filter(TestPaper.tp_question_no == question_no).all()
+            attributes = ""
 
-        #     try:
-        #         attributes.append(query)
-        #     except:
-        #         pass
+            for skills in records_skills:
+                attributes += skills[-1]
+
+            try:
+                question_attributes.append(attributes)
+            except:
+                pass
     
-        return attributes
+        return question_attributes
 
 
     @staticmethod

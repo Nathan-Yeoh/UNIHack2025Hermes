@@ -128,10 +128,14 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
     print(cl_id, tp_id)
     classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
+
     # get the questions of the test as a tuple (question string, marks available)
     questions = DBHandler.get_testquestions_by_tp_id(tp_id)
 
-    return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions)
+    # get question attributes
+    attributes = DBHandler.get_attribute_per_question(tp_id)
+
+    return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions, attributes = attributes)
 
 @app.route("/Classroom/TestPaper/Save/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def save_testpaper(cl_id: str, tp_id: int):
