@@ -173,30 +173,34 @@ class DBHandler:
     
     @staticmethod
     def get_attribute_per_question(tp_id):
+        tp_id = int(tp_id)
         # skills for all questions
-        query_skills = db.session.query(TestPaper, Skill_TestPaper, Skill).filter(
-                        (TestPaper.tp_id == tp_id)).join(
-                        Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).join(
-                        Skill, (Skill_TestPaper.sk_id == Skill.sk_id)).with_entities(
-                        TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
+        query_skills = db.session.query(Skill_TestPaper, Skill).filter(
+                        Skill_TestPaper.tp_id == tp_id).join(
+                        Skill, Skill_TestPaper.sk_id == Skill.sk_id).with_entities(
+                        Skill_TestPaper.tp_id, Skill_TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
         
         # question query
-        query_questions = db.session.query(TestPaper).filter(TestPaper.tp_id == tp_id).with_entities(TestPaper.tp_question_no)
-        records_questions = query_questions.all()
+        question_count = len(DBHandler.get_testquestions_by_tp_id(tp_id))
+        print(tp_id, question_count)
 
         question_attributes = []
-        for question_no in records_questions:
-            records_skills = query_skills.filter(TestPaper.tp_question_no == question_no).all()
+        for question_no in range(1, question_count + 1):
+            records_skills = query_skills.filter(Skill_TestPaper.tp_question_no == question_no).all()
             attributes = ""
 
+            first_skill = True
             for skills in records_skills:
-                attributes += skills[-1]
+                if first_skill:
+                    attributes = skills[-1]
+                    first_skill = False
+                else:
+                    attributes += ", " + skills[-1]
 
             try:
                 question_attributes.append(attributes)
             except:
                 pass
-    
         return question_attributes
 
 
