@@ -122,10 +122,11 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 
         try:
             tp_file = request.files['tp_file']
-            DBHandler.upload_file(tp_file.filename, tp_file.read())
-            OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
+            
         except:
             pass
+        DBHandler.upload_file(tp_file.filename, tp_file.read())
+        OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         
     classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
 
