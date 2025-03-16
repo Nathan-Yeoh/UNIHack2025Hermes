@@ -157,7 +157,7 @@ class DBHandler:
 
             studtotalMark = [x[5] * 100 for x in studquery]
             totalMark = [x[5] * 100 for x in query]
-            print(studtotalMark)
+            # print(studtotalMark)
 
             try:
                 studattributes.append(sum(studtotalMark)/len(studtotalMark))
@@ -170,6 +170,27 @@ class DBHandler:
                 attributes.append(0)
     
         return studattributes, attributes
+    
+    @staticmethod
+    def get_attribute_per_question(tp_id):
+        records = db.session.query(TestPaper, Skill_TestPaper, Skill).filter(
+                        TestPaper, (TestPaper.tp_id == tp_id) & (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no)).join(
+                        Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).join(
+                        Skill, (Skill_TestPaper.sk_id == Skill.sk_id)).with_entities(
+                        TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
+
+        attributes = []
+        
+        print(records)
+
+        # for question in records:
+
+        #     try:
+        #         attributes.append(query)
+        #     except:
+        #         pass
+    
+        return attributes
 
 
     @staticmethod
