@@ -58,14 +58,15 @@ class OpenaiHandler:
     qa_chain = LLMChain(llm=llm, prompt=prompt)
     
     @staticmethod
-    def insert_pdf_into_database(filename, tp_id, cl_id, cltp_name):
+    def insert_pdf_into_database(filename: str, tp_id: int, cl_id: str, cltp_name: str):
         skills = " ".join(DBHandler.get_all_skill_names())
+        print("here")
         data = DBHandler.get_file(filename)
         pdf_text = OpenaiHandler.extract_text_from_pdf(data)
         output = OpenaiHandler.qa_chain.run(test_paper=pdf_text, skill_list=skills)
         print(output)
         formatted = OpenaiHandler.output_to_list(output)
-        
+        print(f"======={cl_id, tp_id, cltp_name}")
         DBHandler.add_to_classroom_testpaper(cl_id, tp_id, cltp_name)
         
         for question in formatted:
@@ -73,7 +74,7 @@ class OpenaiHandler:
             for skill in question[2]:
                 sk_id = DBHandler.get_sk_id_by_name(skill).sk_id
                 DBHandler.add_to_skill_testpaper(tp_id, question[0], sk_id)
-            
+
 
     @staticmethod
     def extract_text_from_pdf(data):

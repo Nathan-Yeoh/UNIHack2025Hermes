@@ -39,7 +39,7 @@
                       <td>
                         <input name="marks_given{{question.get_question_no()}}" type="number"
                                min="0" max="{{question.get_question_total_mark()}}"
-                               value={{question.get_question_total_mark()}}>  / {{question.get_question_total_mark()}}
+                               value=0>  / {{question.get_question_total_mark()}}
                         <input type="hidden" name="marks_avail{{question.get_question_no()}}" value="{{question.get_question_total_mark()}}">
                       </td>
                     </tr>
