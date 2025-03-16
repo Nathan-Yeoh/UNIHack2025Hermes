@@ -76,9 +76,9 @@ def serve_classroom(cl_id: str):
         cl_id = request.form.get("cl_id")
 
     # get all test papers from this classroom
-    test_papers = DBHandler.getTestPapersByClassroom(cl_id)
+    test_papers = DBHandler.get_testpapers_by_classroom(cl_id)
     # get all students in this classroom
-    students = DBHandler.getStudentsByClassroom(cl_id)
+    students = DBHandler.get_students_by_classroom(cl_id)
 
     return render_template('Classroom.html', cl_id=cl_id, test_papers=test_papers, students=students)
 
@@ -90,15 +90,15 @@ def serve_student_graph():
         cl_id = request.form.get("cl_id")
         print(cl_id)
     skillnames = DBHandler.get_all_skill_names()
-    student = DBHandler.getStudentFromId(s_id=s_id)
+    student = DBHandler.get_student_by_id(s_id=s_id)
     studattributes, attributes = DBHandler.get_attribute_values(s_id=s_id, cl_id=cl_id)
     return render_template('StudentGraph.html', skillnames=skillnames, student=student, studattributes=studattributes, attributes=attributes, classroom_id=cl_id)
 
 
 @app.route("/Classroom/TestPaper/<string:cl_id>/<int:tp_id>", methods=["GET", "POST"])
 def serve_testpaper(cl_id: str, tp_id: int):
-    students = DBHandler.getStudentsByClassroom(cl_id)
-    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    students = DBHandler.get_students_by_classroom(cl_id)
+    classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
     return render_template('TestPaper.html', cl_id=cl_id, students=students, classroom_testpaper=classroom_testpaper)
 
 
@@ -124,11 +124,12 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
             DBHandler.upload_file(tp_file.filename, tp_file.read())
             OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         except:
-            pass
+            print("Error in inserting PDF into database")
 
-    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
+    print(cl_id, tp_id)
+    classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
     # get the questions of the test as a tuple (question string, marks available)
-    questions = DBHandler.getTestQuestionsByTpId(tp_id)
+    questions = DBHandler.get_testquestions_by_tp_id(tp_id)
 
     return render_template('TestPaperEdit.html', classroom_testpaper=classroom_testpaper, questions=questions)
 
@@ -136,24 +137,19 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 def save_testpaper(cl_id: str, tp_id: int):
     if request.method == "POST":
         q_length = int(request.form.get("q_length"))
-        print(q_length)
         for i in range(1, q_length+1):
             q_text = request.form.get(f"q_text{i}")
             q_marks = int(request.form.get(f"q_marks{i}"))
-            print(tp_id, i, q_text, q_marks)
-            DBHandler.updateTestQuestionByTpQuestionId(tp_id, i, q_text, q_marks)
+            DBHandler.update_testquestion_by_tp_question_id(tp_id, i, q_text, q_marks)
 
     return redirect(url_for("serve_classroom", cl_id=cl_id))
 
 @app.route("/Classroom/TestPaper/Mark/<string:cl_id>/<int:tp_id>/<int:s_id>", methods=["GET", "POST"])
 def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
-    classroom_testpaper = DBHandler.getTestPaperByClTpId(cl_id, tp_id)
-    questions = DBHandler.getTestQuestionsByTpId(tp_id)
-    student = DBHandler.getStudentFromId(s_id)
+    classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
+    questions = DBHandler.get_testquestions_by_tp_id(tp_id)
+    student = DBHandler.get_student_by_id(s_id)
 
-    print(classroom_testpaper)
-    print(questions)
-    print(student)
     return render_template('TestPaperMark.html', classroom_testpaper=classroom_testpaper, questions=questions, student=student)
 
 
@@ -167,7 +163,6 @@ def mark_testpaper():
 
         for i in range(1, q_length+1):
             norm_mark = int(request.form.get(f"marks_given{i}")) / int(request.form.get(f"marks_avail{i}"))
-            print(norm_mark)
             DBHandler.set_student_mark(cl_id, tp_id,i, s_id, norm_mark)
 
         return redirect(url_for("serve_classroom", cl_id=cl_id))

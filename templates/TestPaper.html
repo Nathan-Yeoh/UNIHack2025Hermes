@@ -2,8 +2,8 @@
 {% block title %} Mark Test {% endblock %}
 {% block content %}
 <div class="content">
-  <p></p>
-  <h1> Mark Test "{{classroom_testpaper.get_cltp_name()}}" </h1>
+  <br>
+  <h1>Mark Test "{{classroom_testpaper.get_cltp_name()}}"</h1>
 
   <div class="row">
     <div class="card" style="padding: 15px; padding-bottom: 0px;">
@@ -12,21 +12,21 @@
           <thead class=" text-primary">
           <tr>
             <th>#</th>
-            <th>Student</th>
-            <th>Mark Test</th>
+            <th width="70%">Student</th>
+            <th style="text-align:center;" align="right">Mark Test</th>
           </tr>
           </thead>
           {% for student in students %}
           <tr>
             <td>{{student[0]}}</td>
             <td>{{student[1]}}</td>
-            <td>
+            <td align="center">
               <form action="{{url_for('serve_testpaper_mark', cl_id=cl_id, tp_id=classroom_testpaper.get_tp_id(), s_id=student[0])}}"
                     method="POST">
                 <input name="cl_id" type="hidden" value="{{cl_id}}">
                 <input name="tp_id" type="hidden" value="{{classroom_testpaper.get_tp_id()}}">
                 <input name="s_id" type="hidden" value="{{student[0]}}">
-                <button type="submit"><i class="tim-icons icon-pencil"></i></button>
+                <button type="submit" class="btn"><i class="tim-icons icon-pencil"></i></button>
               </form>
             </td>
           </tr>

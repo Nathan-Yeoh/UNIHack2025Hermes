@@ -28,7 +28,7 @@ class DBHandler:
     # === CLASSROOM METHODS === #
 
     @staticmethod
-    def getAllClassrooms() -> list[Classroom]:
+    def get_all_classrooms() -> list[Classroom]:
         """
         Returns a list of all classrooms within the database
 
@@ -42,7 +42,7 @@ class DBHandler:
             return -1
 
     @staticmethod
-    def getNumClassrooms() -> int:
+    def get_num_classrooms() -> int:
         """
         Returns the total number of classrooms currently stored within the app
 
@@ -52,7 +52,7 @@ class DBHandler:
         pass
 
     @staticmethod
-    def addClassroom(classroom: Classroom) -> int:
+    def add_classroom(classroom: Classroom) -> int:
         """
         Adds a classroom, and sets the teacher
         :param classroom:
@@ -69,7 +69,7 @@ class DBHandler:
             return 1
 
     @staticmethod
-    def getTestPapersByClassroom(cl_id: str) -> list[TestPaper]:
+    def get_testpapers_by_classroom(cl_id: str) -> list[TestPaper]:
         """
         Returns a list of tuples formatted as (test paper ID, test paper name, TestPaper objects) given the classroom ID as a string
         :param cl_id:
@@ -83,7 +83,7 @@ class DBHandler:
             return -1
 
     @staticmethod
-    def getStudentsByClassroom(cl_id: str) -> list[tuple[int, str]]:
+    def get_students_by_classroom(cl_id: str) -> list[tuple[int, str]]:
         """
         Returns the list of student IDs as a list of integers
 
@@ -105,7 +105,7 @@ class DBHandler:
     # === STUDENT METHODS === #
 
     @staticmethod
-    def getStudentFromId(s_id: int) -> Student:
+    def get_student_by_id(s_id: int) -> Student:
         """
         Returns the student object from their ID number
 
@@ -157,7 +157,7 @@ class DBHandler:
 
             studtotalMark = [x[5] * 100 for x in studquery]
             totalMark = [x[5] * 100 for x in query]
-            print(studtotalMark)
+            # print(studtotalMark)
 
             try:
                 studattributes.append(sum(studtotalMark)/len(studtotalMark))
@@ -170,18 +170,40 @@ class DBHandler:
                 attributes.append(0)
     
         return studattributes, attributes
+    
+    @staticmethod
+    def get_attribute_per_question(tp_id):
+        records = db.session.query(TestPaper, Skill_TestPaper, Skill).filter(
+                        TestPaper, (TestPaper.tp_id == tp_id) & (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no)).join(
+                        Skill_TestPaper, (TestPaper.tp_question_no == Skill_TestPaper.tp_question_no) & (TestPaper.tp_id == Skill_TestPaper.tp_id)).join(
+                        Skill, (Skill_TestPaper.sk_id == Skill.sk_id)).with_entities(
+                        TestPaper.tp_id, TestPaper.tp_question_no, Skill_TestPaper.sk_id, Skill.sk_name)
+
+        attributes = []
+        
+        print(records)
+
+        # for question in records:
+
+        #     try:
+        #         attributes.append(query)
+        #     except:
+        #         pass
+    
+        return attributes
 
 
     @staticmethod
-    def getTestResult(cl_id:str, tp_id: int, tp_question_no: int, s_id: int) -> Test_Result:
+    def get_test_result(cl_id:str, tp_id: int, tp_question_no: int, s_id: int) -> Test_Result:
         try:
             return Test_Result.query.get((cl_id, tp_id, tp_question_no, s_id))
         except Exception as e:
-            return 0
+            _print(e)
+            return -1
 
     # === TEST PAPER METHODS === #
     @staticmethod
-    def getTestPaperByClTpId(cl_id: str, tp_id: int) -> TestPaper:
+    def get_testpaper_by_cltp_id(cl_id: str, tp_id: int) -> TestPaper:
         """
         Returns a Classroom_TestPaper object from input of classroom ID and test paper ID
 
@@ -197,7 +219,7 @@ class DBHandler:
 
 
     @staticmethod
-    def getTestQuestionsByTpId(tp_id: int) -> list[tuple[str, int]]:
+    def get_testquestions_by_tp_id(tp_id: int) -> list[tuple[str, int]]:
         """
         Takes the classroom ID and test paper ID and outputs a list of tuples organised as (question string, marks available)
 
@@ -212,10 +234,12 @@ class DBHandler:
             return -1
 
     @staticmethod
-    def updateTestQuestionByTpQuestionId(tp_id: int, tp_question_no: int, tp_question_text: str, tp_question_total_mark: int):
+    def update_testquestion_by_tp_question_id(tp_id: int, tp_question_no: int, tp_question_text: str, tp_question_total_mark: int):
         """
         Takes an input of the test paper ID and question number ID, and updates the values
 
+        :param tp_question_total_mark:
+        :param tp_question_text:
         :param tp_id:
         :param tp_question_no:
         :return:
@@ -233,22 +257,25 @@ class DBHandler:
             return -1
     
     @staticmethod
-    def add_to_classroom_testpaper(cl_id, tp_id, cltp_name):
+    def add_to_classroom_testpaper(cl_id: str, tp_id: int, cltp_name: str):
         insert = Classroom_TestPaper(cl_id=cl_id, tp_id=tp_id, cltp_name=cltp_name)
         db.session.add(insert)
         db.session.commit()
+        return 0
     
     @staticmethod
     def add_to_testpaper(tp_id, tp_question_no, tp_question_text, tp_question_total_mark):
         insert = TestPaper(tp_id=tp_id, tp_question_no=tp_question_no, tp_question_text=tp_question_text, tp_question_total_mark=tp_question_total_mark)
         db.session.add(insert)
         db.session.commit()
+        return 0
     
     @staticmethod
     def add_to_skill_testpaper(tp_id, tp_question_no, sk_id):
         insert = Skill_TestPaper(tp_id=tp_id, tp_question_no=tp_question_no, sk_id=sk_id)
         db.session.add(insert)
         db.session.commit()
+        return 0
     
     @staticmethod
     def get_sk_id_by_name(sk_name):
@@ -257,7 +284,7 @@ class DBHandler:
 
     @staticmethod
     def set_student_mark(cl_id: str, tp_id: int, tp_question_no:int, s_id:int, norm_mark:float = 0):
-        test_result = DBHandler.getTestResult(cl_id, tp_id, tp_question_no, s_id)
+        test_result = DBHandler.get_test_result(cl_id, tp_id, tp_question_no, s_id)
 
         if test_result == 0 or test_result is None:
             test_result = Test_Result(cl_id=cl_id, tp_id=tp_id, tp_question_no=tp_question_no, s_id=s_id)
@@ -272,7 +299,9 @@ class DBHandler:
         insert = PDF_upload(filename=filename, data=data)
         db.session.add(insert)
         db.session.commit()
-    
+
+
+    @staticmethod
     def get_file(filename):
         output = PDF_upload.query.filter(PDF_upload.filename==filename).first().data
         return output

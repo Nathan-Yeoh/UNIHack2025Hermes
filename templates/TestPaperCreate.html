@@ -1,40 +1,41 @@
 {% extends "layouts/base.html" %}
+{% block title %} New Test {% endblock %}
 {% block content %}
 <div class="content">
-    <p></p>
-    <h1>New Test</h1>
+  <br>
+  <h1>New Test</h1>
 
-    <!-- form inputs -->
-    <div class="row">
-        <div class="card">
-            <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
-                <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=tp_id)}}" enctype="multipart/form-data" method="post">
-                    <!-- name input -->
-                    <label for="tp_name">Test paper name:</label><br>
-                    <input type="text" id="tp_name" name="tp_name" required><br>
+  <!-- form inputs -->
+  <div class="row">
+    <div class="card">
+      <div class="col-12" style="margin-top: 15px; margin-bottom: 15px;">
+        <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=tp_id)}}" enctype="multipart/form-data" method="post">
+          <!-- name input -->
+          <label for="tp_name">Test paper name:</label><br>
+          <input id="tp_name" name="tp_name" required type="text"><br>
 
-                    <!-- file input -->
-                    <label for="tp_file" style="position: relative; top: 10px">Select a file:</label><br>
-                    <input type="file" class="btn" id="tp_file" name="tp_file" required><br>
-                    <br>
+          <!-- file input -->
+          <label for="tp_file" style="position: relative; top: 10px">Select a file:</label><br>
+          <input accept="application/pdf" class="btn" id="tp_file" name="tp_file" required type="file"><br>
+          <br>
 
-                    <!-- generate button -->
-                    <input type="submit" class="btn" value="Generate">
-                    <!-- cancel button -->
-                    <button type="button" class="btn" onclick="cancel()">Cancel</button>
+          <!-- generate button -->
+          <input class="btn" type="submit" value="Generate">
+          <!-- cancel button -->
+          <button class="btn" onclick="cancel()" type="button">Cancel</button>
 
-                    <!-- hidden inputs -->
-                    <input type="hidden" id="cl_id" name="cl_id" value="{{cl_id}}">
-                    <input type="hidden" id="tp_id" name="tp_id" value="{{tp_id}}">
-                </form>
-            </div>
-        </div>
+          <!-- hidden inputs -->
+          <input id="cl_id" name="cl_id" type="hidden" value="{{cl_id}}">
+          <input id="tp_id" name="tp_id" type="hidden" value="{{tp_id}}">
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-    function cancel() {
-      location.href = "{{url_for('serve_classroom', cl_id=cl_id)}}"
-    }
+  function cancel() {
+    location.href = "{{url_for('serve_classroom', cl_id=cl_id)}}"
+  }
 </script>
 {% endblock %}

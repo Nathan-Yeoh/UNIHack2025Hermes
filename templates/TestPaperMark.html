@@ -2,62 +2,58 @@
 {% block title %} Marking Test {% endblock %}
 {% block content %}
 <div class="content">
-  <p></p>
-  <h1> {{classroom_testpaper.get_cltp_name()}} - {{student.get_s_name()}} </h1>
+  <br>
+  <h1>{{classroom_testpaper.get_cltp_name()}} - {{student.get_s_name()}}</h1>
 
   <div class="flex-container" style="flex: 1; margin-right: 10px;">
     <h2>Test Papers</h2>
-    <div class="content">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card ">
-            <div class="card-header">
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <form
-                        action="{{url_for('mark_testpaper', cl_id=classroom_testpaper.get_cl_id(), tp_id=classroom_testpaper.get_tp_id(), s_id=student.get_s_id())}}"
-                        method="POST">
-                  <input name="cl_id" type="hidden" value="{{classroom_testpaper.get_cl_id()}}">
-                  <input name="tp_id" type="hidden" value="{{classroom_testpaper.get_tp_id()}}">
-                  <input name="s_id" type="hidden" value="{{student.get_s_id()}}">
-                  <input name="q_length" type="hidden" value="{{questions|length}}">
+    <div class="row">
+      <div class="card" style="padding: 15px; padding-bottom: 0px;">
+        <div class="table-responsive">
+          <form action="{{url_for('mark_testpaper', cl_id=classroom_testpaper.get_cl_id(), tp_id=classroom_testpaper.get_tp_id(), s_id=student.get_s_id())}}" method="POST">
+            <input name="cl_id" type="hidden" value="{{classroom_testpaper.get_cl_id()}}">
+            <input name="tp_id" type="hidden" value="{{classroom_testpaper.get_tp_id()}}">
+            <input name="s_id" type="hidden" value="{{student.get_s_id()}}">
+            <input name="q_length" type="hidden" value="{{questions|length}}">
 
-                  <input name="q_length" type="hidden" value="{{questions|length}}">
-                  <table class="table tablesorter " id="">
-                    <thead class=" text-primary">
-                    <tr>
-                      <th>Question #</th>
-                      <th>Question Text</th>
-                      <th>Marks</th>
-                    </tr>
-                    </thead>
-                    {% for question in questions %}
-                    <tr>
-                      <td>{{question.get_question_no()}}</td>
-                      <td>{{question.get_question_text()}}</td>
-                      <td>
-                        <input name="marks_given{{question.get_question_no()}}" type="number"
-                               min="0" max="{{question.get_question_total_mark()}}"
-                               value={{question.get_question_total_mark()}}>  / {{question.get_question_total_mark()}}
-                        <input type="hidden" name="marks_avail{{question.get_question_no()}}" value="{{question.get_question_total_mark()}}">
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </table>
-                  <!--                    Mark button-->
-                  <button type="submit">Mark</button>
+            <input name="q_length" type="hidden" value="{{questions|length}}">
+            <table class="table tablesorter " id="">
+              <thead class=" text-primary">
+              <tr>
+                <th>Question #</th>
+                <th>Question Text</th>
+                <th>Marks</th>
+              </tr>
+              </thead>
+              {% for question in questions %}
+              <tr>
+                <td>{{question.get_question_no()}}</td>
+                <td>{{question.get_question_text()}}</td>
+                <td>
+                  <input name="marks_given{{question.get_question_no()}}" type="number"
+                          min="0" max="{{question.get_question_total_mark()}}"
+                          value=0>  / {{question.get_question_total_mark()}}
+                  <input type="hidden" name="marks_avail{{question.get_question_no()}}" value="{{question.get_question_total_mark()}}">
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+            
+            <!-- Mark button -->
+            <button type="submit" class="btn">Mark</button>
 
-                  <!--                  Cancel button-->
-                  <a href="{{url_for('serve_classroom', cl_id=classroom_testpaper.get_cl_id())}}">Cancel</a>
-                </form>
-              </div>
-            </div>
-          </div>
+            <!-- Cancel button -->
+            <button type="button" class="btn" onclick="cancel()">Cancel</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
-
 </div>
+
+<script>
+  function cancel() {
+    location.href = "{{url_for('serve_testpaper', cl_id=classroom_testpaper.get_cl_id(), tp_id=classroom_testpaper.get_tp_id())}}"
+  }
+</script>
 {% endblock %}
