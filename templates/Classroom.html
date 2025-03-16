@@ -17,26 +17,26 @@
                   <table class="table tablesorter " id="" >
                     <thead class=" text-primary">
                     <tr>
-                      <th>Test Name</th>
-                      <th>Edit Test</th>
-                      <th>Mark Test</th>
+                      <th style="width:90%">Test Name</th>
+                      <th style="text-align:center;">Edit Test</th>
+                      <th style="text-align:center;">Mark Test</th>
                     </tr>
                     </thead>
                     {% for test_paper in test_papers %}
                     <tr>
                       <td>{{test_paper.get_cltp_name()}}</td>
-                      <td>
+                      <td align="center">
                         <form action="{{url_for('serve_testpaper_edit', cl_id=cl_id, tp_id=test_paper.get_tp_id())}}" method="POST">
                           <input name="cl_id" type="hidden" value="{{cl_id}}">
                           <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
-                          <button type="submit"><i class="tim-icons icon-pencil"></i></button>
+                          <button type="submit" class="btn"><i class="tim-icons icon-pencil" style="font-size:17px;"></i></button>
                         </form>
                       </td>
-                      <td>
+                      <td align="center">
                         <form action="{{url_for('serve_testpaper', cl_id=cl_id, tp_id=test_paper.get_tp_id())}}" method="POST">
                           <input name="cl_id" type="hidden" value="{{cl_id}}">
                           <input name="tp_id" type="hidden" value="{{test_paper.get_tp_id()}}">
-                          <button type="submit"><i class="tim-icons icon-check-2"></i></button>
+                          <button type="submit" class="btn"><i class="tim-icons icon-check-2" style="font-size:15px;"></i></button>
                         </form>
                       </td>
                     </tr>
@@ -65,25 +65,23 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card " style="height: 70svh;">
-              <div class="card-header">
-              </div>
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table tablesorter">
                     <thead class=" text-primary">
                     <tr>
-                      <th>Name</th>
-                      <th>View</th>
+                      <th style="width:80%">Name</th>
+                      <th style="text-align:center;">View</th>
                     </tr>
                     </thead>
                     {% for student in students %}
                     <tr>
                       <td>{{student[1]}}</td>
-                      <td>
+                      <td align="center">
                         <form action="{{url_for('serve_student_graph', s_id = student.id)}}" method="POST">
                           <input name="s_id" type="hidden" value="{{student[0]}}">
                           <input name="cl_id" type="hidden" value="{{cl_id}}">
-                          <button type="submit"><i class="tim-icons icon-atom"></i></button>
+                          <button type="submit" class="btn"><i class="tim-icons icon-atom"></i></button>
                         </form>
                       </td>
                     </tr>

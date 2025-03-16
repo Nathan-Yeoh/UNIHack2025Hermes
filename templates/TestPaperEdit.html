@@ -27,9 +27,10 @@
               {% for question in questions %}
               <tr>
                 <td>{{question.get_question_no()}}</td>
-                <td><input name="q_text{{question.get_question_no()}}" style="width: 100%" type="text"
+                <td><input name="q_text{{question.get_question_no()}}" style="width: 100%;background-color : #eadcfef5;" type="text"
                             value="{{question.get_question_text()}}"></td>
-                <td><input name="q_marks{{question.get_question_no()}}" type="number" value={{question.get_question_total_mark()}}>
+                <td><input name="q_marks{{question.get_question_no()}}" style="background-color : #eadcfef5;" type="number"
+                           value={{question.get_question_total_mark()}}>
                 </td>
               </tr>
               {% endfor %}

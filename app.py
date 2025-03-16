@@ -124,11 +124,10 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
             DBHandler.upload_file(tp_file.filename, tp_file.read())
             OpenaiHandler.insert_pdf_into_database(tp_file.filename, tp_id, cl_id, tp_name)
         except:
-            print("error here")
+            print("Error in inserting PDF into database")
 
     print(cl_id, tp_id)
     classroom_testpaper = DBHandler.get_testpaper_by_cltp_id(cl_id, tp_id)
-    print(classroom_testpaper)
     # get the questions of the test as a tuple (question string, marks available)
     questions = DBHandler.get_testquestions_by_tp_id(tp_id)
 
@@ -138,11 +137,9 @@ def serve_testpaper_edit(cl_id: str, tp_id: int):
 def save_testpaper(cl_id: str, tp_id: int):
     if request.method == "POST":
         q_length = int(request.form.get("q_length"))
-        print(q_length)
         for i in range(1, q_length+1):
             q_text = request.form.get(f"q_text{i}")
             q_marks = int(request.form.get(f"q_marks{i}"))
-            print(tp_id, i, q_text, q_marks)
             DBHandler.update_testquestion_by_tp_question_id(tp_id, i, q_text, q_marks)
 
     return redirect(url_for("serve_classroom", cl_id=cl_id))
@@ -153,9 +150,6 @@ def serve_testpaper_mark(cl_id: str, tp_id: int, s_id: int):
     questions = DBHandler.get_testquestions_by_tp_id(tp_id)
     student = DBHandler.get_student_by_id(s_id)
 
-    print(classroom_testpaper)
-    print(questions)
-    print(student)
     return render_template('TestPaperMark.html', classroom_testpaper=classroom_testpaper, questions=questions, student=student)
 
 
@@ -169,7 +163,6 @@ def mark_testpaper():
 
         for i in range(1, q_length+1):
             norm_mark = int(request.form.get(f"marks_given{i}")) / int(request.form.get(f"marks_avail{i}"))
-            print(norm_mark)
             DBHandler.set_student_mark(cl_id, tp_id,i, s_id, norm_mark)
 
         return redirect(url_for("serve_classroom", cl_id=cl_id))

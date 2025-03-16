@@ -60,11 +60,9 @@ class OpenaiHandler:
     @staticmethod
     def insert_pdf_into_database(filename: str, tp_id: int, cl_id: str, cltp_name: str):
         skills = " ".join(DBHandler.get_all_skill_names())
-        print("here")
         data = DBHandler.get_file(filename)
         pdf_text = OpenaiHandler.extract_text_from_pdf(data)
         output = OpenaiHandler.qa_chain.run(test_paper=pdf_text, skill_list=skills)
-        print("=======")
         print(output)
         formatted = OpenaiHandler.output_to_list(output)
         DBHandler.add_to_classroom_testpaper(cl_id, tp_id, cltp_name)
